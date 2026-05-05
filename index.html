@@ -1,0 +1,1785 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DB Security Hub — MySQL Seminar</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap"
+    rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #05090f;
+      --surface: #0b1017;
+      --card: #0e161f;
+      --border: #1a2535;
+      --accent1: #00d4ff;
+      --accent2: #ff5f57;
+      --accent3: #29d984;
+      --accent4: #ffb347;
+      --accent5: #b47aff;
+      --accent6: #ff7eb3;
+      --text: #e2eaf5;
+      --muted: #6a7f99;
+      --glow1: rgba(0, 212, 255, 0.15);
+      --glow2: rgba(255, 95, 87, 0.15);
+      --glow3: rgba(41, 217, 132, 0.15);
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Syne', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── GRID BG ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
+      background-size: 48px 48px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── FLOATING ORB ── */
+    .orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(80px);
+      pointer-events: none;
+      z-index: 0;
+      animation: floatOrb 12s ease-in-out infinite;
+    }
+
+    .orb1 {
+      width: 500px;
+      height: 500px;
+      background: rgba(0, 212, 255, 0.07);
+      top: -100px;
+      right: -100px;
+      animation-delay: 0s;
+    }
+
+    .orb2 {
+      width: 400px;
+      height: 400px;
+      background: rgba(255, 95, 87, 0.06);
+      bottom: 100px;
+      left: -80px;
+      animation-delay: -4s;
+    }
+
+    .orb3 {
+      width: 300px;
+      height: 300px;
+      background: rgba(41, 217, 132, 0.05);
+      top: 40%;
+      left: 40%;
+      animation-delay: -8s;
+    }
+
+    @keyframes floatOrb {
+
+      0%,
+      100% {
+        transform: translate(0, 0);
+      }
+
+      33% {
+        transform: translate(30px, -40px);
+      }
+
+      66% {
+        transform: translate(-20px, 30px);
+      }
+    }
+
+    /* ── HEADER ── */
+    header {
+      position: relative;
+      z-index: 10;
+      padding: 32px 40px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      background: rgba(5, 9, 15, 0.8);
+      backdrop-filter: blur(12px);
+      animation: slideDown .6s ease both;
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .logo {
+      font-family: 'Space Mono', monospace;
+      font-size: 13px;
+      color: var(--accent1);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent1);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        box-shadow: 0 0 0 0 rgba(0, 212, 255, .5)
+      }
+
+      50% {
+        box-shadow: 0 0 0 8px rgba(0, 212, 255, 0)
+      }
+    }
+
+    .nav-badge {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+      padding: 6px 14px;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      letter-spacing: 1px;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      z-index: 5;
+      text-align: center;
+      padding: 80px 40px 60px;
+    }
+
+    .hero-tag {
+      display: inline-block;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 3px;
+      color: var(--accent1);
+      text-transform: uppercase;
+      border: 1px solid rgba(0, 212, 255, 0.3);
+      padding: 5px 16px;
+      border-radius: 20px;
+      margin-bottom: 24px;
+      animation: fadeUp .6s .2s ease both;
+    }
+
+    .hero h1 {
+      font-size: clamp(36px, 6vw, 72px);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -2px;
+      animation: fadeUp .6s .3s ease both;
+    }
+
+    .hero h1 span.c1 {
+      color: var(--accent1);
+    }
+
+    .hero h1 span.c2 {
+      color: var(--accent2);
+    }
+
+    .hero h1 span.c3 {
+      color: var(--accent3);
+    }
+
+    .hero-sub {
+      margin-top: 20px;
+      font-size: 16px;
+      color: var(--muted);
+      max-width: 560px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.7;
+      animation: fadeUp .6s .4s ease both;
+    }
+
+    .hero-pills {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 28px;
+      animation: fadeUp .6s .5s ease both;
+    }
+
+    .pill {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      padding: 5px 14px;
+      border-radius: 20px;
+      border: 1px solid;
+      letter-spacing: 1px;
+      cursor: default;
+      transition: transform .2s, box-shadow .2s;
+    }
+
+    .pill:hover {
+      transform: translateY(-2px);
+    }
+
+    .pill-blue {
+      color: var(--accent1);
+      border-color: rgba(0, 212, 255, 0.3);
+      background: rgba(0, 212, 255, 0.06);
+    }
+
+    .pill-red {
+      color: var(--accent2);
+      border-color: rgba(255, 95, 87, 0.3);
+      background: rgba(255, 95, 87, 0.06);
+    }
+
+    .pill-green {
+      color: var(--accent3);
+      border-color: rgba(41, 217, 132, 0.3);
+      background: rgba(41, 217, 132, 0.06);
+    }
+
+    .pill-yellow {
+      color: var(--accent4);
+      border-color: rgba(255, 179, 71, 0.3);
+      background: rgba(255, 179, 71, 0.06);
+    }
+
+    .pill-purple {
+      color: var(--accent5);
+      border-color: rgba(180, 122, 255, 0.3);
+      background: rgba(180, 122, 255, 0.06);
+    }
+
+    .pill-pink {
+      color: var(--accent6);
+      border-color: rgba(255, 126, 179, 0.3);
+      background: rgba(255, 126, 179, 0.06);
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(24px)
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0)
+      }
+    }
+
+    /* ── SECTION LABEL ── */
+    .section-label {
+      position: relative;
+      z-index: 5;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 3px;
+      color: var(--muted);
+      text-transform: uppercase;
+      text-align: center;
+      margin-bottom: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+    }
+
+    .section-label::before,
+    .section-label::after {
+      content: '';
+      flex: 1;
+      max-width: 120px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border));
+    }
+
+    .section-label::after {
+      background: linear-gradient(90deg, var(--border), transparent);
+    }
+
+    /* ── GRID ── */
+    .grid {
+      position: relative;
+      z-index: 5;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 20px;
+      padding: 0 40px 80px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    /* ── CARD ── */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: transform .3s cubic-bezier(.2, 0, .1, 1), box-shadow .3s, border-color .3s;
+      opacity: 0;
+      animation: cardReveal .5s ease forwards;
+    }
+
+    .card:hover {
+      transform: translateY(-6px) scale(1.01);
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--card-glow, transparent);
+      opacity: 0;
+      transition: opacity .4s;
+      border-radius: 16px;
+    }
+
+    .card:hover::before {
+      opacity: 1;
+    }
+
+    /* glow per card */
+    .card.blue {
+      --card-glow: radial-gradient(circle at 30% 20%, rgba(0, 212, 255, .08), transparent 60%);
+    }
+
+    .card.blue:hover {
+      border-color: rgba(0, 212, 255, .4);
+      box-shadow: 0 20px 60px rgba(0, 212, 255, .12);
+    }
+
+    .card.red {
+      --card-glow: radial-gradient(circle at 30% 20%, rgba(255, 95, 87, .08), transparent 60%);
+    }
+
+    .card.red:hover {
+      border-color: rgba(255, 95, 87, .4);
+      box-shadow: 0 20px 60px rgba(255, 95, 87, .12);
+    }
+
+    .card.green {
+      --card-glow: radial-gradient(circle at 30% 20%, rgba(41, 217, 132, .08), transparent 60%);
+    }
+
+    .card.green:hover {
+      border-color: rgba(41, 217, 132, .4);
+      box-shadow: 0 20px 60px rgba(41, 217, 132, .12);
+    }
+
+    .card.yellow {
+      --card-glow: radial-gradient(circle at 30% 20%, rgba(255, 179, 71, .08), transparent 60%);
+    }
+
+    .card.yellow:hover {
+      border-color: rgba(255, 179, 71, .4);
+      box-shadow: 0 20px 60px rgba(255, 179, 71, .12);
+    }
+
+    .card.purple {
+      --card-glow: radial-gradient(circle at 30% 20%, rgba(180, 122, 255, .08), transparent 60%);
+    }
+
+    .card.purple:hover {
+      border-color: rgba(180, 122, 255, .4);
+      box-shadow: 0 20px 60px rgba(180, 122, 255, .12);
+    }
+
+    .card.pink {
+      --card-glow: radial-gradient(circle at 30% 20%, rgba(255, 126, 179, .08), transparent 60%);
+    }
+
+    .card.pink:hover {
+      border-color: rgba(255, 126, 179, .4);
+      box-shadow: 0 20px 60px rgba(255, 126, 179, .12);
+    }
+
+    @keyframes cardReveal {
+      from {
+        opacity: 0;
+        transform: translateY(32px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* card header */
+    .card-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 14px;
+    }
+
+    .card-icon {
+      font-size: 28px;
+      line-height: 1;
+      filter: drop-shadow(0 0 10px currentColor);
+    }
+
+    .card-num {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: var(--muted);
+      padding: 4px 10px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+    }
+
+    .card-topic {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .card-title {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -.5px;
+      margin-bottom: 10px;
+      line-height: 1.3;
+    }
+
+    .card-desc {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+
+    /* points list */
+    .points {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 18px;
+    }
+
+    .points li {
+      font-size: 12px;
+      color: #8fa3bd;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      line-height: 1.5;
+    }
+
+    .points li::before {
+      content: '›';
+      font-size: 14px;
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .card.blue .points li::before {
+      color: var(--accent1);
+    }
+
+    .card.red .points li::before {
+      color: var(--accent2);
+    }
+
+    .card.green .points li::before {
+      color: var(--accent3);
+    }
+
+    .card.yellow.points li::before {
+      color: var(--accent4);
+    }
+
+    .card.purple.points li::before {
+      color: var(--accent5);
+    }
+
+    .card.pink .points li::before {
+      color: var(--accent6);
+    }
+
+    /* tags */
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 20px;
+    }
+
+    .tag {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      padding: 3px 10px;
+      border-radius: 10px;
+      border: 1px solid;
+      letter-spacing: .5px;
+    }
+
+    .card.blue .tag {
+      color: var(--accent1);
+      border-color: rgba(0, 212, 255, .25);
+      background: rgba(0, 212, 255, .06);
+    }
+
+    .card.red .tag {
+      color: var(--accent2);
+      border-color: rgba(255, 95, 87, .25);
+      background: rgba(255, 95, 87, .06);
+    }
+
+    .card.green .tag {
+      color: var(--accent3);
+      border-color: rgba(41, 217, 132, .25);
+      background: rgba(41, 217, 132, .06);
+    }
+
+    .card.yellow .tag {
+      color: var(--accent4);
+      border-color: rgba(255, 179, 71, .25);
+      background: rgba(255, 179, 71, .06);
+    }
+
+    .card.purple .tag {
+      color: var(--accent5);
+      border-color: rgba(180, 122, 255, .25);
+      background: rgba(180, 122, 255, .06);
+    }
+
+    .card.pink .tag {
+      color: var(--accent6);
+      border-color: rgba(255, 126, 179, .25);
+      background: rgba(255, 126, 179, .06);
+    }
+
+    /* card footer */
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid var(--border);
+      padding-top: 16px;
+    }
+
+    .card-count {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .card-count strong {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -1px;
+      display: block;
+      line-height: 1;
+    }
+
+    .card.blue .card-count strong {
+      color: var(--accent1);
+    }
+
+    .card.red .card-count strong {
+      color: var(--accent2);
+    }
+
+    .card.green .card-count strong {
+      color: var(--accent3);
+    }
+
+    .card.yellow .card-count strong {
+      color: var(--accent4);
+    }
+
+    .card.purple .card-count strong {
+      color: var(--accent5);
+    }
+
+    .card.pink .card-count strong {
+      color: var(--accent6);
+    }
+
+    .card-btn {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 1px;
+      padding: 8px 18px;
+      border-radius: 8px;
+      border: 1px solid;
+      background: transparent;
+      cursor: pointer;
+      transition: all .2s;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .card-btn .arr {
+      transition: transform .2s;
+    }
+
+    .card-btn:hover .arr {
+      transform: translateX(4px);
+    }
+
+    .card.blue .card-btn {
+      color: var(--accent1);
+      border-color: rgba(0, 212, 255, .4);
+    }
+
+    .card.blue .card-btn:hover {
+      background: rgba(0, 212, 255, .1);
+    }
+
+    .card.red .card-btn {
+      color: var(--accent2);
+      border-color: rgba(255, 95, 87, .4);
+    }
+
+    .card.red .card-btn:hover {
+      background: rgba(255, 95, 87, .1);
+    }
+
+    .card.green .card-btn {
+      color: var(--accent3);
+      border-color: rgba(41, 217, 132, .4);
+    }
+
+    .card.green .card-btn:hover {
+      background: rgba(41, 217, 132, .1);
+    }
+
+    .card.yellow .card-btn {
+      color: var(--accent4);
+      border-color: rgba(255, 179, 71, .4);
+    }
+
+    .card.yellow .card-btn:hover {
+      background: rgba(255, 179, 71, .1);
+    }
+
+    .card.purple .card-btn {
+      color: var(--accent5);
+      border-color: rgba(180, 122, 255, .4);
+    }
+
+    .card.purple .card-btn:hover {
+      background: rgba(180, 122, 255, .1);
+    }
+
+    .card.pink .card-btn {
+      color: var(--accent6);
+      border-color: rgba(255, 126, 179, .4);
+    }
+
+    .card.pink .card-btn:hover {
+      background: rgba(255, 126, 179, .1);
+    }
+
+    /* ── MODAL ── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(5, 9, 15, .9);
+      backdrop-filter: blur(16px);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .3s;
+    }
+
+    .modal-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .modal {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      width: 100%;
+      max-width: 800px;
+      max-height: 90vh;
+      overflow-y: auto;
+      transform: scale(.94) translateY(20px);
+      transition: transform .35s cubic-bezier(.2, 0, .1, 1);
+      scrollbar-width: thin;
+      scrollbar-color: var(--border) transparent;
+    }
+
+    .modal-overlay.open .modal {
+      transform: scale(1) translateY(0);
+    }
+
+    .modal-header {
+      padding: 28px 32px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      position: sticky;
+      top: 0;
+      background: var(--card);
+      z-index: 2;
+    }
+
+    .modal-close {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all .2s;
+      flex-shrink: 0;
+      margin-left: 16px;
+    }
+
+    .modal-close:hover {
+      border-color: var(--accent2);
+      color: var(--accent2);
+    }
+
+    .modal-body {
+      padding: 28px 32px 36px;
+    }
+
+    .modal-section {
+      margin-bottom: 28px;
+    }
+
+    .modal-section h3 {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 14px;
+      font-family: 'IBM Plex Mono', monospace;
+    }
+
+    .modal-section p {
+      font-size: 14px;
+      color: #8fa3bd;
+      line-height: 1.8;
+      margin-bottom: 10px;
+    }
+
+    pre {
+      background: #060c12;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px;
+      overflow-x: auto;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      line-height: 1.7;
+      color: #9bb5cc;
+      margin-bottom: 14px;
+      position: relative;
+    }
+
+    pre .kw {
+      color: var(--accent1);
+    }
+
+    pre .str {
+      color: var(--accent3);
+    }
+
+    pre .cmt {
+      color: #4a6278;
+      font-style: italic;
+    }
+
+    pre .fn {
+      color: var(--accent4);
+    }
+
+    pre .val {
+      color: var(--accent5);
+    }
+
+    .info-box {
+      background: rgba(0, 212, 255, .04);
+      border: 1px solid rgba(0, 212, 255, .15);
+      border-radius: 10px;
+      padding: 14px 18px;
+      font-size: 13px;
+      color: #7ab8cc;
+      line-height: 1.7;
+      margin-bottom: 14px;
+    }
+
+    .info-box.warn {
+      background: rgba(255, 179, 71, .04);
+      border-color: rgba(255, 179, 71, .2);
+      color: #c9a06a;
+    }
+
+    .info-box.danger {
+      background: rgba(255, 95, 87, .04);
+      border-color: rgba(255, 95, 87, .2);
+      color: #cc8585;
+    }
+
+    .modal-point-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .modal-point-list li {
+      font-size: 13.5px;
+      color: #8fa3bd;
+      line-height: 1.7;
+      padding-left: 20px;
+      position: relative;
+    }
+
+    .modal-point-list li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--modal-accent, var(--accent1));
+    }
+
+    /* privilege table */
+    .priv-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12.5px;
+    }
+
+    .priv-table th {
+      background: #0a141c;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 10px 14px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .priv-table td {
+      padding: 9px 14px;
+      border-bottom: 1px solid rgba(26, 37, 53, .6);
+      color: #8fa3bd;
+    }
+
+    .priv-table tr:hover td {
+      background: rgba(255, 255, 255, .02);
+    }
+
+    .priv-table .badge {
+      display: inline-block;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: 6px;
+      background: rgba(0, 212, 255, .1);
+      color: var(--accent1);
+      border: 1px solid rgba(0, 212, 255, .2);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      position: relative;
+      z-index: 5;
+      text-align: center;
+      padding: 28px 40px;
+      border-top: 1px solid var(--border);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 1px;
+    }
+
+    /* SCROLLBAR */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 3px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="orb orb3"></div>
+
+  <header>
+    <div class="logo">
+      <div class="logo-dot"></div>
+      DB Security Hub
+    </div>
+    <div class="nav-badge">MySQL Seminar ZSGS· 2026</div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-tag">🔐 Seminar Guide</div>
+    <h1>
+      <span class="c1">Database</span><br>
+      <span class="c2">Security</span> &amp; <span class="c3">Encryption</span>
+    </h1>
+    <p class="hero-sub">
+      Master MySQL access control, user management, encryption techniques,
+      GRANT/REVOKE, roles, and auditing — with real examples and code.
+    </p>
+    <div class="hero-pills">
+      <span class="pill pill-blue">Access Control</span>
+      <span class="pill pill-red">GRANT / REVOKE</span>
+      <span class="pill pill-green">AES Encryption</span>
+      <span class="pill pill-yellow">Password Policy</span>
+      <span class="pill pill-purple">Roles</span>
+      <span class="pill pill-pink">SSL / TLS</span>
+    </div>
+  </section>
+
+  <div class="section-label">Select a Topic</div>
+
+  <div class="grid" id="grid"></div>
+
+  <!-- MODAL -->
+  <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+    <div class="modal" id="modal">
+      <div class="modal-header" id="modalHeader">
+        <div>
+          <div class="card-topic" id="modalTopic"></div>
+          <div class="card-title" id="modalTitle" style="font-size:22px;font-weight:800;letter-spacing:-1px;"></div>
+        </div>
+        <button class="modal-close" onclick="closeModalBtn()">✕</button>
+      </div>
+      <div class="modal-body" id="modalBody"></div>
+    </div>
+  </div>
+
+  <footer>Built for DB Security Seminar &nbsp;·&nbsp; MySQL Deep Dive &nbsp;·&nbsp; Study smart, ship secure.</footer>
+
+  <script>
+    const topics = [
+      {
+        color: 'blue',
+        icon: '👤',
+        num: 'TOPIC 01',
+        topic: 'User Management',
+        title: 'Creating & Managing MySQL Users',
+        desc: 'Control who can connect to MySQL — from local-only accounts to subnet-wide access with host wildcards.',
+        points: [
+          'CREATE USER with host-based restrictions',
+          'ALTER USER to change passwords and settings',
+          'RENAME, LOCK, and DROP user accounts',
+          'View all users from mysql.user system table',
+          'Wildcard hosts: localhost vs % vs subnet',
+        ],
+        tags: ['CREATE USER', 'ALTER USER', 'DROP USER', 'mysql.user'],
+        count: '5', unit: 'Key Commands',
+        detail: `user_management`
+      },
+      {
+        color: 'red',
+        icon: '🔑',
+        num: 'TOPIC 02',
+        topic: 'Authorization',
+        title: 'GRANT — Giving Permissions',
+        desc: 'Precisely control what each user can do — from read-only access to full admin rights, at table or column level.',
+        points: [
+          'Grant global, database, table, or column level privileges',
+          'ALL PRIVILEGES vs selective permissions',
+          'WITH GRANT OPTION — letting users grant to others',
+          'EXECUTE privilege for stored procedures',
+          'FLUSH PRIVILEGES to apply changes immediately',
+        ],
+        tags: ['GRANT', 'SELECT', 'INSERT', 'EXECUTE', 'ALL PRIVILEGES'],
+        count: '12', unit: 'Privilege Types',
+        detail: `grant`
+      },
+      {
+        color: 'green',
+        icon: '🚫',
+        num: 'TOPIC 03',
+        topic: 'Authorization',
+        title: 'REVOKE — Removing Permissions',
+        desc: 'Remove specific or all permissions from users — enforce principle of least privilege at any time.',
+        points: [
+          'Revoke single or multiple privileges at once',
+          'REVOKE ALL PRIVILEGES removes everything',
+          'Revoke only GRANT OPTION without removing access',
+          'Use SHOW GRANTS to audit before revoking',
+          'Principle of least privilege explained',
+        ],
+        tags: ['REVOKE', 'SHOW GRANTS', 'Least Privilege', 'FLUSH'],
+        count: '5', unit: 'Revoke Patterns',
+        detail: `revoke`
+      },
+      {
+        color: 'purple',
+        icon: '🧩',
+        num: 'TOPIC 04',
+        topic: 'Roles · MySQL 8.0+',
+        title: 'Role-Based Access Control (RBAC)',
+        desc: 'Bundle privileges into named roles and assign them to many users — clean, scalable access management.',
+        points: [
+          'Create roles like "hr_role", "dev_role", "audit_role"',
+          'Grant privileges TO the role, not each user',
+          'Assign multiple roles to a single user',
+          'SET DEFAULT ROLE activates role on login',
+          'REVOKE a role without touching user directly',
+        ],
+        tags: ['CREATE ROLE', 'GRANT ROLE', 'SET DEFAULT ROLE', 'RBAC'],
+        count: '4', unit: 'Role Steps',
+        detail: `roles`
+      },
+      {
+        color: 'yellow',
+        icon: '🛡️',
+        num: 'TOPIC 05',
+        topic: 'Account Security',
+        title: 'Password Policy & Account Locking',
+        desc: 'Enforce strong passwords, expiry intervals, and auto-lock accounts after repeated failed login attempts.',
+        points: [
+          'validate_password plugin — LOW, MEDIUM, STRONG',
+          'Set minimum length, mixed case, special chars',
+          'PASSWORD EXPIRE INTERVAL for forced rotation',
+          'ACCOUNT LOCK / UNLOCK to disable accounts',
+          'FAILED_LOGIN_ATTEMPTS + PASSWORD_LOCK_TIME',
+        ],
+        tags: ['VALIDATE_PASSWORD', 'ACCOUNT LOCK', 'PASSWORD EXPIRE', 'MFA'],
+        count: '6', unit: 'Security Controls',
+        detail: `password`
+      },
+      {
+        color: 'pink',
+        icon: '🔒',
+        num: 'TOPIC 06',
+        topic: 'Encryption',
+        title: 'AES Column-Level Encryption',
+        desc: 'Protect sensitive fields like SSN and credit cards using AES_ENCRYPT / AES_DECRYPT inside MySQL.',
+        points: [
+          'AES_ENCRYPT() / AES_DECRYPT() functions',
+          'Store encrypted data as VARBINARY column',
+          'Secret key management best practices',
+          'Readable by app only with correct key',
+          'Difference between symmetric & asymmetric encryption',
+        ],
+        tags: ['AES_ENCRYPT', 'AES_DECRYPT', 'VARBINARY', 'Secret Key'],
+        count: '256', unit: 'Bit Encryption',
+        detail: `aes`
+      },
+      {
+        color: 'blue',
+        icon: '#️⃣',
+        num: 'TOPIC 07',
+        topic: 'Encryption',
+        title: 'Password Hashing (One-Way)',
+        desc: 'Use SHA2 to store hashed passwords that can never be reversed — essential for authentication tables.',
+        points: [
+          'SHA2() with 256 or 512 bits',
+          'Salting to prevent rainbow table attacks',
+          'Verify password by re-hashing and comparing',
+          'Why MD5 and SHA1 are insecure today',
+          'Use bcrypt/argon2 in application code',
+        ],
+        tags: ['SHA2', 'Salt', 'bcrypt', 'MD5', 'Hashing'],
+        count: '256', unit: 'SHA2 Bits',
+        detail: `hashing`
+      },
+      {
+        color: 'green',
+        icon: '🗄️',
+        num: 'TOPIC 08',
+        topic: 'Encryption',
+        title: 'Transparent Data Encryption (TDE)',
+        desc: 'Encrypt entire InnoDB tablespaces on disk — data is automatically encrypted at rest without app changes.',
+        points: [
+          'ENCRYPTION="Y" on CREATE TABLE',
+          'ALTER TABLE to encrypt existing tables',
+          'keyring_file plugin for key management',
+          'Check encrypted tables via information_schema',
+          'Zero performance impact on modern hardware',
+        ],
+        tags: ['TDE', 'InnoDB', 'ENCRYPTION=Y', 'keyring_file'],
+        count: 'AES·256', unit: 'At-Rest Cipher',
+        detail: `tde`
+      },
+      {
+        color: 'yellow',
+        icon: '🌐',
+        num: 'TOPIC 09',
+        topic: 'Network Security',
+        title: 'SSL/TLS — Encryption in Transit',
+        desc: 'Force encrypted connections between client and MySQL server — prevent man-in-the-middle attacks.',
+        points: [
+          'REQUIRE SSL — user must connect over TLS',
+          'REQUIRE X509 — mutual certificate auth',
+          'SHOW VARIABLES LIKE "%ssl%" to check status',
+          'Cipher suite negotiation explained',
+          'Combining SSL with password for double security',
+        ],
+        tags: ['SSL', 'TLS', 'REQUIRE SSL', 'X509', 'Certificate'],
+        count: 'TLS 1.3', unit: 'Protocol',
+        detail: `ssl`
+      },
+      {
+        color: 'red',
+        icon: '📋',
+        num: 'TOPIC 10',
+        topic: 'Auditing',
+        title: 'Monitoring & Audit Logging',
+        desc: 'Track every query, login, and suspicious activity using general logs and performance_schema.',
+        points: [
+          'general_log — log every SQL statement',
+          'performance_schema for failed login tracking',
+          'PROCESSLIST to see active connections',
+          'KILL CONNECTION to end suspicious sessions',
+          'Audit plugin for enterprise-grade logging',
+        ],
+        tags: ['general_log', 'PROCESSLIST', 'KILL', 'performance_schema'],
+        count: '100%', unit: 'Query Visibility',
+        detail: `audit`
+      },
+      {
+        color: 'purple',
+        icon: '🏢',
+        num: 'TOPIC 11',
+        topic: 'Real-World Scenario',
+        title: 'Company DB Security Setup',
+        desc: 'End-to-end scenario: build a secured company database with roles, encrypted SSN, restricted views.',
+        points: [
+          'Design roles for HR, Developer, Auditor',
+          'Encrypt SSN with AES before insert',
+          'Create VIEWS to hide sensitive columns',
+          'Grant only view access to auditor role',
+          'Combine SSL + roles + encryption in one schema',
+        ],
+        tags: ['Full Demo', 'Roles', 'AES', 'VIEW', 'SSL'],
+        count: '11', unit: 'Steps',
+        detail: `scenario`
+      },
+      {
+        color: 'pink',
+        icon: '📊',
+        num: 'REFERENCE',
+        topic: 'Quick Reference',
+        title: 'Privilege Types Cheat Sheet',
+        desc: 'Every MySQL privilege at a glance — scope, description, and when to use it in production.',
+        points: [
+          'Global vs Database vs Table vs Column scope',
+          'DDL privileges: CREATE, DROP, ALTER, INDEX',
+          'DML privileges: SELECT, INSERT, UPDATE, DELETE',
+          'Admin privileges: SUPER, PROCESS, RELOAD',
+          'SHOW GRANTS to audit any user at any time',
+        ],
+        tags: ['DDL', 'DML', 'SUPER', 'PROCESS', 'SHOW GRANTS'],
+        count: '30+', unit: 'Privileges',
+        detail: `cheatsheet`
+      },
+    ];
+
+    // ── MODAL CONTENT ──
+    const modalContent = {
+      user_management: {
+        accent: '#00d4ff',
+        sections: [
+          { type: 'info', text: '🎯 Access control starts with <strong>who can connect</strong> to the MySQL server. Each user account is identified by a <code>username@host</code> pair — the same username from different hosts counts as different accounts.' },
+          { type: 'heading', text: 'Creating Users' },
+          {
+            type: 'code', code: `<span class="cmt">-- Basic syntax</span>
+<span class="kw">CREATE USER</span> <span class="str">'username'</span>@<span class="str">'host'</span> <span class="kw">IDENTIFIED BY</span> <span class="str">'password'</span>;
+
+<span class="cmt">-- Local only (most secure)</span>
+<span class="kw">CREATE USER</span> <span class="str">'john'</span>@<span class="str">'localhost'</span> <span class="kw">IDENTIFIED BY</span> <span class="str">'SecurePass@123'</span>;
+
+<span class="cmt">-- Allow entire subnet 192.168.1.*</span>
+<span class="kw">CREATE USER</span> <span class="str">'app_user'</span>@<span class="str">'192.168.1.%'</span> <span class="kw">IDENTIFIED BY</span> <span class="str">'AppPass@456'</span>;
+
+<span class="cmt">-- Allow from anywhere (least secure)</span>
+<span class="kw">CREATE USER</span> <span class="str">'admin'</span>@<span class="str">'%'</span> <span class="kw">IDENTIFIED BY</span> <span class="str">'AdminPass@789'</span>;` },
+          { type: 'heading', text: 'Viewing & Modifying Users' },
+          {
+            type: 'code', code: `<span class="cmt">-- See all accounts</span>
+<span class="kw">SELECT</span> user, host, authentication_string <span class="kw">FROM</span> mysql.user;
+
+<span class="cmt">-- Change password</span>
+<span class="kw">ALTER USER</span> <span class="str">'john'</span>@<span class="str">'localhost'</span> <span class="kw">IDENTIFIED BY</span> <span class="str">'NewPass@999'</span>;
+
+<span class="cmt">-- Rename a user</span>
+<span class="kw">RENAME USER</span> <span class="str">'john'</span>@<span class="str">'localhost'</span> <span class="kw">TO</span> <span class="str">'john_doe'</span>@<span class="str">'localhost'</span>;
+
+<span class="cmt">-- Delete permanently</span>
+<span class="kw">DROP USER</span> <span class="str">'john'</span>@<span class="str">'localhost'</span>;` },
+          { type: 'warn', text: "⚠️ Always prefer <code>'user'@'localhost'</code> over <code>'user'@'%'</code>. Using % allows connections from ANY IP — dangerous in production!" },
+          { type: 'points-heading', text: 'Host Wildcard Rules' },
+          { type: 'points', items: ["'localhost' — only the server machine itself", "'%' — any IP address (use only with firewalls)", "'192.168.1.%' — any IP in that subnet", "'192.168.1.10' — one specific machine only", "MySQL matches the most specific host pattern first"] },
+        ]
+      },
+      grant: {
+        accent: '#ff5f57',
+        sections: [
+          { type: 'info', text: '🎯 <strong>GRANT</strong> controls exactly <em>what</em> an authenticated user can do. Privileges can be scoped to the entire server, a database, a specific table, or even individual columns.' },
+          { type: 'heading', text: 'Privilege Scope Levels' },
+          { type: 'table' },
+          { type: 'heading', text: 'Common GRANT Examples' },
+          {
+            type: 'code', code: `<span class="cmt">-- Read-only on one table</span>
+<span class="kw">GRANT</span> <span class="fn">SELECT</span> <span class="kw">ON</span> company.employees <span class="kw">TO</span> <span class="str">'john'</span>@<span class="str">'localhost'</span>;
+
+<span class="cmt">-- Multiple privileges on full database</span>
+<span class="kw">GRANT</span> <span class="fn">SELECT</span>, <span class="fn">INSERT</span>, <span class="fn">UPDATE</span> <span class="kw">ON</span> company.* <span class="kw">TO</span> <span class="str">'app'</span>@<span class="str">'localhost'</span>;
+
+<span class="cmt">-- Superuser (full server access)</span>
+<span class="kw">GRANT ALL PRIVILEGES ON</span> *.* <span class="kw">TO</span> <span class="str">'admin'</span>@<span class="str">'localhost'</span> <span class="kw">WITH GRANT OPTION</span>;
+
+<span class="cmt">-- Column-level (only specific columns)</span>
+<span class="kw">GRANT</span> <span class="fn">SELECT</span> (emp_name, department) <span class="kw">ON</span> company.employees <span class="kw">TO</span> <span class="str">'reporter'</span>@<span class="str">'localhost'</span>;
+
+<span class="cmt">-- Stored procedure execution</span>
+<span class="kw">GRANT EXECUTE ON PROCEDURE</span> company.get_salary <span class="kw">TO</span> <span class="str">'hr'</span>@<span class="str">'localhost'</span>;
+
+<span class="cmt">-- Apply immediately</span>
+<span class="kw">FLUSH PRIVILEGES</span>;` },
+          { type: 'points-heading', text: 'Key Concepts' },
+          { type: 'points', items: ['WITH GRANT OPTION — allows the user to grant their own privileges to others', 'ON *.* = global scope, ON db.* = database scope, ON db.tbl = table scope', 'Column-level grants restrict SELECT to only those columns', 'FLUSH PRIVILEGES reloads the grant tables from disk', 'Privileges are additive — multiple GRANTs combine'] },
+        ]
+      },
+      revoke: {
+        accent: '#29d984',
+        sections: [
+          { type: 'info', text: '🎯 <strong>REVOKE</strong> is the counterpart to GRANT. Use it to enforce the <em>Principle of Least Privilege</em> — users should have only the permissions they actually need.' },
+          { type: 'heading', text: 'REVOKE Examples' },
+          {
+            type: 'code', code: `<span class="cmt">-- Remove single privilege</span>
+<span class="kw">REVOKE</span> <span class="fn">DELETE</span> <span class="kw">ON</span> company.* <span class="kw">FROM</span> <span class="str">'app_user'</span>@<span class="str">'localhost'</span>;
+
+<span class="cmt">-- Remove multiple at once</span>
+<span class="kw">REVOKE</span> <span class="fn">INSERT</span>, <span class="fn">UPDATE</span> <span class="kw">ON</span> company.employees <span class="kw">FROM</span> <span class="str">'john'</span>@<span class="str">'localhost'</span>;
+
+<span class="cmt">-- Remove everything</span>
+<span class="kw">REVOKE ALL PRIVILEGES ON</span> *.* <span class="kw">FROM</span> <span class="str">'admin'</span>@<span class="str">'localhost'</span>;
+
+<span class="cmt">-- Remove only the ability to grant (keep access)</span>
+<span class="kw">REVOKE GRANT OPTION ON</span> *.* <span class="kw">FROM</span> <span class="str">'admin'</span>@<span class="str">'localhost'</span>;
+
+<span class="cmt">-- Always verify after revoking</span>
+<span class="kw">SHOW GRANTS FOR</span> <span class="str">'john'</span>@<span class="str">'localhost'</span>;` },
+          { type: 'points-heading', text: 'Principle of Least Privilege' },
+          { type: 'points', items: ['Only grant what the user absolutely needs for their role', 'Developers rarely need DELETE — give SELECT, INSERT, UPDATE only', 'Audit apps may only need SELECT on specific views', 'Regularly review privileges as roles change in your team', 'Revoking ALL PRIVILEGES does NOT drop the user — just removes access'] },
+          { type: 'warn', text: '⚠️ REVOKE ALL PRIVILEGES does <strong>not</strong> remove the user account. You must also REVOKE GRANT OPTION and then DROP USER if you want full removal.' },
+        ]
+      },
+      roles: {
+        accent: '#b47aff',
+        sections: [
+          { type: 'info', text: '🎯 <strong>Roles</strong> (MySQL 8.0+) let you group privileges under a named role and assign that role to many users. Instead of granting 10 privileges to 50 users individually, you grant once to the role.' },
+          { type: 'heading', text: 'Creating & Using Roles' },
+          {
+            type: 'code', code: `<span class="cmt">-- Step 1: Create roles</span>
+<span class="kw">CREATE ROLE</span> <span class="str">'read_only'</span>, <span class="str">'developer'</span>, <span class="str">'db_admin'</span>;
+
+<span class="cmt">-- Step 2: Grant privileges TO the role</span>
+<span class="kw">GRANT</span> <span class="fn">SELECT</span> <span class="kw">ON</span> company.* <span class="kw">TO</span> <span class="str">'read_only'</span>;
+<span class="kw">GRANT</span> <span class="fn">SELECT</span>, <span class="fn">INSERT</span>, <span class="fn">UPDATE</span>, <span class="fn">DELETE</span> <span class="kw">ON</span> company.* <span class="kw">TO</span> <span class="str">'developer'</span>;
+<span class="kw">GRANT ALL PRIVILEGES ON</span> company.* <span class="kw">TO</span> <span class="str">'db_admin'</span>;
+
+<span class="cmt">-- Step 3: Assign roles to users</span>
+<span class="kw">GRANT</span> <span class="str">'read_only'</span> <span class="kw">TO</span> <span class="str">'john'</span>@<span class="str">'localhost'</span>;
+<span class="kw">GRANT</span> <span class="str">'developer'</span> <span class="kw">TO</span> <span class="str">'app_user'</span>@<span class="str">'localhost'</span>;
+
+<span class="cmt">-- Step 4: Activate role on login</span>
+<span class="kw">SET DEFAULT ROLE</span> <span class="str">'developer'</span> <span class="kw">TO</span> <span class="str">'app_user'</span>@<span class="str">'localhost'</span>;
+
+<span class="cmt">-- Revoke role without touching privileges</span>
+<span class="kw">REVOKE</span> <span class="str">'developer'</span> <span class="kw">FROM</span> <span class="str">'app_user'</span>@<span class="str">'localhost'</span>;
+
+<span class="cmt">-- Drop a role entirely</span>
+<span class="kw">DROP ROLE</span> <span class="str">'read_only'</span>;` },
+          { type: 'points-heading', text: 'Why Use Roles?' },
+          { type: 'points', items: ['Scale: add a new team member by granting one role, not 15 privileges', 'Consistency: all developers get identical permissions automatically', 'Easy rotation: change developer role once, affects all developers', 'A user can have multiple roles simultaneously', 'Roles themselves can be granted to other roles (role hierarchy)'] },
+        ]
+      },
+      password: {
+        accent: '#ffb347',
+        sections: [
+          { type: 'info', text: '🎯 MySQL\'s password policy plugin enforces strong credentials, automatic expiry, and account lockout after brute-force attempts.' },
+          { type: 'heading', text: 'Password Validation Plugin' },
+          {
+            type: 'code', code: `<span class="cmt">-- Check current policy settings</span>
+<span class="kw">SHOW VARIABLES LIKE</span> <span class="str">'validate_password%'</span>;
+
+<span class="cmt">-- Set STRONG policy</span>
+<span class="kw">SET GLOBAL</span> validate_password.policy = <span class="str">'STRONG'</span>;
+<span class="kw">SET GLOBAL</span> validate_password.length = <span class="val">12</span>;
+<span class="kw">SET GLOBAL</span> validate_password.mixed_case_count = <span class="val">1</span>;
+<span class="kw">SET GLOBAL</span> validate_password.number_count = <span class="val">1</span>;
+<span class="kw">SET GLOBAL</span> validate_password.special_char_count = <span class="val">1</span>;` },
+          { type: 'heading', text: 'Account Locking & Expiry' },
+          {
+            type: 'code', code: `<span class="cmt">-- Auto-expire password every 30 days</span>
+<span class="kw">CREATE USER</span> <span class="str">'temp'</span>@<span class="str">'localhost'</span>
+    <span class="kw">IDENTIFIED BY</span> <span class="str">'Temp@Pass1'</span>
+    <span class="kw">PASSWORD EXPIRE INTERVAL</span> <span class="val">30</span> <span class="kw">DAY</span>;
+
+<span class="cmt">-- Lock account (disable login without dropping)</span>
+<span class="kw">ALTER USER</span> <span class="str">'john'</span>@<span class="str">'localhost'</span> <span class="kw">ACCOUNT LOCK</span>;
+
+<span class="cmt">-- Unlock account</span>
+<span class="kw">ALTER USER</span> <span class="str">'john'</span>@<span class="str">'localhost'</span> <span class="kw">ACCOUNT UNLOCK</span>;
+
+<span class="cmt">-- Auto-lock after 3 failed logins for 2 days (MySQL 8.0.19+)</span>
+<span class="kw">ALTER USER</span> <span class="str">'john'</span>@<span class="str">'localhost'</span>
+    FAILED_LOGIN_ATTEMPTS <span class="val">3</span>
+    PASSWORD_LOCK_TIME <span class="val">2</span>;` },
+          { type: 'points-heading', text: 'Policy Levels Explained' },
+          { type: 'points', items: ['LOW — only enforces minimum length', 'MEDIUM — length + mixed case + numbers + special chars', 'STRONG — MEDIUM + dictionary file check against common passwords', 'ACCOUNT LOCK preserves the account and its privileges', 'PASSWORD EXPIRE forces change on next login'] },
+        ]
+      },
+      aes: {
+        accent: '#ff7eb3',
+        sections: [
+          { type: 'info', text: '🎯 AES (Advanced Encryption Standard) is a <strong>symmetric encryption</strong> algorithm. MySQL provides <code>AES_ENCRYPT()</code> and <code>AES_DECRYPT()</code> to protect sensitive column data.' },
+          { type: 'heading', text: 'Encrypting Sensitive Columns' },
+          {
+            type: 'code', code: `<span class="cmt">-- Store encrypted binary in VARBINARY</span>
+<span class="kw">CREATE TABLE</span> secure_users (
+    id       <span class="fn">INT AUTO_INCREMENT PRIMARY KEY</span>,
+    username <span class="fn">VARCHAR</span>(<span class="val">100</span>),
+    credit_card <span class="fn">VARBINARY</span>(<span class="val">255</span>),   <span class="cmt">-- encrypted binary</span>
+    email    <span class="fn">VARCHAR</span>(<span class="val">255</span>)
+);
+
+<span class="cmt">-- Secret key (store in env variable, never hardcode!)</span>
+<span class="kw">SET</span> @secret_key = <span class="str">'MySecretKey@2024'</span>;
+
+<span class="cmt">-- Insert with encryption</span>
+<span class="kw">INSERT INTO</span> secure_users (username, credit_card, email)
+<span class="kw">VALUES</span> (
+    <span class="str">'Alice'</span>,
+    <span class="fn">AES_ENCRYPT</span>(<span class="str">'4111-1111-1111-1111'</span>, @secret_key),
+    <span class="str">'alice@example.com'</span>
+);
+
+<span class="cmt">-- Read and decrypt</span>
+<span class="kw">SELECT</span> username,
+    <span class="fn">CAST</span>(<span class="fn">AES_DECRYPT</span>(credit_card, @secret_key) <span class="kw">AS CHAR</span>) <span class="kw">AS</span> credit_card
+<span class="kw">FROM</span> secure_users;
+
+<span class="cmt">-- Without key → unreadable binary garbage ✓</span>
+<span class="kw">SELECT</span> credit_card <span class="kw">FROM</span> secure_users;` },
+          { type: 'danger', text: '🚨 Never hardcode the secret key in SQL scripts. Store it in environment variables or a secrets manager (AWS Secrets Manager, HashiCorp Vault).' },
+          { type: 'points-heading', text: 'Key Concepts' },
+          { type: 'points', items: ['AES uses the same key to encrypt and decrypt (symmetric)', '128-bit mode by default; use block_encryption_mode for AES-256', 'Data stored as binary — always use VARBINARY column type', 'Without the key, SELECT returns unreadable binary data', 'Rotate keys periodically by decrypting and re-encrypting all rows'] },
+        ]
+      },
+      hashing: {
+        accent: '#00d4ff',
+        sections: [
+          { type: 'info', text: '🎯 Hashing is <strong>one-way</strong> — unlike encryption, you cannot reverse it. Use SHA2 for password storage. Never store plaintext passwords!' },
+          { type: 'heading', text: 'Password Hashing with Salt' },
+          {
+            type: 'code', code: `<span class="cmt">-- Create a users table with hashed passwords</span>
+<span class="kw">CREATE TABLE</span> app_users (
+    id            <span class="fn">INT AUTO_INCREMENT PRIMARY KEY</span>,
+    username      <span class="fn">VARCHAR</span>(<span class="val">100</span>),
+    password_hash <span class="fn">VARCHAR</span>(<span class="val">255</span>),
+    salt          <span class="fn">VARCHAR</span>(<span class="val">50</span>)
+);
+
+<span class="cmt">-- Insert with salted SHA2-256 hash</span>
+<span class="kw">SET</span> @salt = <span class="str">'random_salt_xyz_abc'</span>;
+<span class="kw">INSERT INTO</span> app_users (username, password_hash, salt)
+<span class="kw">VALUES</span> (
+    <span class="str">'bob'</span>,
+    <span class="fn">SHA2</span>(<span class="fn">CONCAT</span>(<span class="str">'MyPassword123'</span>, @salt), <span class="val">256</span>),
+    @salt
+);
+
+<span class="cmt">-- Verify login: hash input + same salt, then compare</span>
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> app_users
+<span class="kw">WHERE</span> username = <span class="str">'bob'</span>
+  <span class="kw">AND</span> password_hash = <span class="fn">SHA2</span>(<span class="fn">CONCAT</span>(<span class="str">'MyPassword123'</span>, salt), <span class="val">256</span>);` },
+          { type: 'points-heading', text: 'SHA2 vs MD5 vs bcrypt' },
+          { type: 'points', items: ['MD5 — broken, rainbow tables exist, never use for passwords', 'SHA1 — deprecated, vulnerable to collision attacks', 'SHA2(256) — secure for data integrity checks, fast', 'SHA2(512) — more bits, same performance concern', 'bcrypt / argon2 — deliberately slow, best for passwords in app code'] },
+          { type: 'warn', text: '⚠️ Salting prevents rainbow table attacks. Two users with the same password will have different hashes because their salts differ.' },
+        ]
+      },
+      tde: {
+        accent: '#29d984',
+        sections: [
+          { type: 'info', text: '🎯 <strong>Transparent Data Encryption</strong> encrypts entire InnoDB tablespace files on disk. The database engine handles encryption/decryption automatically — applications see no difference.' },
+          { type: 'heading', text: 'Enabling Table Encryption' },
+          {
+            type: 'code', code: `<span class="cmt">-- my.cnf (server config)</span>
+<span class="cmt">-- early-plugin-load=keyring_file.so</span>
+<span class="cmt">-- keyring_file_data=/var/lib/mysql-keyring/keyring</span>
+
+<span class="cmt">-- Create a new encrypted table</span>
+<span class="kw">CREATE TABLE</span> sensitive_data (
+    id     <span class="fn">INT PRIMARY KEY</span>,
+    ssn    <span class="fn">VARCHAR</span>(<span class="val">20</span>),
+    salary <span class="fn">DECIMAL</span>(<span class="val">10</span>,<span class="val">2</span>)
+) ENCRYPTION=<span class="str">'Y'</span>;
+
+<span class="cmt">-- Encrypt an existing table</span>
+<span class="kw">ALTER TABLE</span> employees ENCRYPTION=<span class="str">'Y'</span>;
+
+<span class="cmt">-- Verify which tables are encrypted</span>
+<span class="kw">SELECT</span> TABLE_SCHEMA, TABLE_NAME, CREATE_OPTIONS
+<span class="kw">FROM</span> information_schema.TABLES
+<span class="kw">WHERE</span> CREATE_OPTIONS <span class="kw">LIKE</span> <span class="str">'%ENCRYPTION%'</span>;
+
+<span class="cmt">-- Remove encryption</span>
+<span class="kw">ALTER TABLE</span> sensitive_data ENCRYPTION=<span class="str">'N'</span>;` },
+          { type: 'points-heading', text: 'How TDE Works' },
+          { type: 'points', items: ['Data is encrypted before writing to .ibd tablespace files', 'Decrypted automatically on read by the InnoDB engine', 'If someone steals your .ibd file — it is unreadable without the key', 'keyring_file plugin stores the master key on the server', 'Rotate the master key with: ALTER INSTANCE ROTATE INNODB MASTER KEY'] },
+        ]
+      },
+      ssl: {
+        accent: '#ffb347',
+        sections: [
+          { type: 'info', text: '🎯 Even with strong passwords and encrypted storage, data traveling between your app and MySQL is vulnerable to <strong>man-in-the-middle attacks</strong> without SSL/TLS.' },
+          { type: 'heading', text: 'SSL Configuration' },
+          {
+            type: 'code', code: `<span class="cmt">-- Check SSL status on the server</span>
+<span class="kw">SHOW VARIABLES LIKE</span> <span class="str">'%ssl%'</span>;
+<span class="kw">SHOW STATUS LIKE</span> <span class="str">'Ssl_cipher'</span>;
+
+<span class="cmt">-- Create user that MUST use SSL</span>
+<span class="kw">CREATE USER</span> <span class="str">'secure_user'</span>@<span class="str">'%'</span>
+    <span class="kw">IDENTIFIED BY</span> <span class="str">'SecurePass@1'</span>
+    <span class="kw">REQUIRE SSL</span>;
+
+<span class="cmt">-- Require mutual certificate (X.509)</span>
+<span class="kw">CREATE USER</span> <span class="str">'cert_user'</span>@<span class="str">'%'</span>
+    <span class="kw">IDENTIFIED BY</span> <span class="str">'CertPass@1'</span>
+    <span class="kw">REQUIRE X509</span>;
+
+<span class="cmt">-- Require specific cipher + issuer</span>
+<span class="kw">CREATE USER</span> <span class="str">'strict_user'</span>@<span class="str">'%'</span>
+    <span class="kw">REQUIRE</span> CIPHER <span class="str">'AES128-SHA256'</span>
+    <span class="kw">AND</span> ISSUER <span class="str">'/C=US/O=MyCompany/CN=MyCA'</span>;
+
+<span class="cmt">-- Verify current connection is encrypted</span>
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> performance_schema.session_status
+<span class="kw">WHERE</span> VARIABLE_NAME = <span class="str">'Ssl_cipher'</span>;` },
+          { type: 'points-heading', text: 'SSL vs TLS — What\'s the Difference?' },
+          { type: 'points', items: ['SSL (Secure Sockets Layer) is the older, deprecated protocol', 'TLS (Transport Layer Security) is the modern replacement', 'MySQL uses TLS 1.2 or 1.3 but still calls the feature "SSL"', 'REQUIRE SSL — any valid TLS connection accepted', 'REQUIRE X509 — both client AND server must present certificates (mutual auth)'] },
+        ]
+      },
+      audit: {
+        accent: '#ff5f57',
+        sections: [
+          { type: 'info', text: '🎯 <strong>Auditing</strong> answers: "who did what, and when?" Essential for compliance (GDPR, HIPAA, PCI-DSS) and detecting security breaches after the fact.' },
+          { type: 'heading', text: 'Enabling Query Logging' },
+          {
+            type: 'code', code: `<span class="cmt">-- Enable general log (logs every SQL statement)</span>
+<span class="kw">SET GLOBAL</span> general_log = <span class="str">'ON'</span>;
+<span class="kw">SET GLOBAL</span> general_log_file = <span class="str">'/var/log/mysql/audit.log'</span>;
+
+<span class="cmt">-- Check if enabled</span>
+<span class="kw">SHOW VARIABLES LIKE</span> <span class="str">'general_log%'</span>;
+
+<span class="cmt">-- View all active connections right now</span>
+<span class="kw">SELECT</span> user, host, db, command, time, state
+<span class="kw">FROM</span> information_schema.PROCESSLIST;
+
+<span class="cmt">-- Kill a suspicious long-running session</span>
+<span class="kw">KILL CONNECTION</span> <span class="val">42</span>;  <span class="cmt">-- use ID from PROCESSLIST</span>
+
+<span class="cmt">-- Track failed statements via performance_schema</span>
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> performance_schema.events_statements_history
+<span class="kw">WHERE</span> ERRORS > <span class="val">0</span>
+<span class="kw">ORDER BY</span> TIMER_START <span class="kw">DESC LIMIT</span> <span class="val">20</span>;` },
+          { type: 'points-heading', text: 'Audit Checklist' },
+          { type: 'points', items: ['Log all failed login attempts', 'Monitor PROCESSLIST for sessions running > 60 seconds', 'Alert on DROP TABLE, TRUNCATE, or DELETE without WHERE', 'Review SHOW GRANTS for all users quarterly', 'Use MySQL Enterprise Audit plugin for production-grade logging'] },
+          { type: 'warn', text: '⚠️ general_log writes every query to disk — it can significantly impact performance. Only use it for debugging or short audit windows, not permanently in production.' },
+        ]
+      },
+      scenario: {
+        accent: '#b47aff',
+        sections: [
+          { type: 'info', text: '🎯 Full end-to-end demo: HR, Developer, and Auditor roles — each with appropriate access — plus AES-encrypted SSN and a restricted audit view.' },
+          { type: 'heading', text: 'Full Company DB Security Setup' },
+          {
+            type: 'code', code: `<span class="cmt">-- 1. Create database</span>
+<span class="kw">CREATE DATABASE</span> company_db;
+<span class="kw">USE</span> company_db;
+
+<span class="cmt">-- 2. Create table with encrypted column</span>
+<span class="kw">CREATE TABLE</span> employees (
+    id         <span class="fn">INT PRIMARY KEY</span>,
+    name       <span class="fn">VARCHAR</span>(<span class="val">100</span>),
+    salary     <span class="fn">DECIMAL</span>(<span class="val">10</span>,<span class="val">2</span>),
+    department <span class="fn">VARCHAR</span>(<span class="val">50</span>),
+    ssn        <span class="fn">VARBINARY</span>(<span class="val">255</span>)   <span class="cmt">-- AES-encrypted</span>
+);
+
+<span class="cmt">-- 3. Create roles</span>
+<span class="kw">CREATE ROLE</span> <span class="str">'hr_role'</span>, <span class="str">'dev_role'</span>, <span class="str">'audit_role'</span>;
+
+<span class="cmt">-- 4. Assign privileges to roles</span>
+<span class="kw">GRANT</span> <span class="fn">SELECT</span>, <span class="fn">INSERT</span>, <span class="fn">UPDATE</span> <span class="kw">ON</span> company_db.employees <span class="kw">TO</span> <span class="str">'hr_role'</span>;
+<span class="kw">GRANT</span> <span class="fn">SELECT</span> <span class="kw">ON</span> company_db.* <span class="kw">TO</span> <span class="str">'dev_role'</span>;
+<span class="kw">GRANT</span> <span class="fn">SELECT</span> <span class="kw">ON</span> company_db.* <span class="kw">TO</span> <span class="str">'audit_role'</span>;
+
+<span class="cmt">-- 5. Create users with SSL for auditor</span>
+<span class="kw">CREATE USER</span> <span class="str">'hr_mgr'</span>@<span class="str">'localhost'</span> <span class="kw">IDENTIFIED BY</span> <span class="str">'HR@123'</span>;
+<span class="kw">CREATE USER</span> <span class="str">'dev1'</span>@<span class="str">'localhost'</span>   <span class="kw">IDENTIFIED BY</span> <span class="str">'Dev@456'</span>;
+<span class="kw">CREATE USER</span> <span class="str">'auditor'</span>@<span class="str">'localhost'</span> <span class="kw">IDENTIFIED BY</span> <span class="str">'Aud@789'</span> <span class="kw">REQUIRE SSL</span>;
+
+<span class="cmt">-- 6. Assign and activate roles</span>
+<span class="kw">GRANT</span> <span class="str">'hr_role'</span>    <span class="kw">TO</span> <span class="str">'hr_mgr'</span>@<span class="str">'localhost'</span>;
+<span class="kw">GRANT</span> <span class="str">'dev_role'</span>   <span class="kw">TO</span> <span class="str">'dev1'</span>@<span class="str">'localhost'</span>;
+<span class="kw">GRANT</span> <span class="str">'audit_role'</span> <span class="kw">TO</span> <span class="str">'auditor'</span>@<span class="str">'localhost'</span>;
+<span class="kw">SET DEFAULT ROLE ALL TO</span> <span class="str">'hr_mgr'</span>@<span class="str">'localhost'</span>,
+                         <span class="str">'dev1'</span>@<span class="str">'localhost'</span>,
+                         <span class="str">'auditor'</span>@<span class="str">'localhost'</span>;
+
+<span class="cmt">-- 7. Insert encrypted employee data</span>
+<span class="kw">SET</span> @k = <span class="str">'CompanyKey2024!'</span>;
+<span class="kw">INSERT INTO</span> employees <span class="kw">VALUES</span> (
+    <span class="val">1</span>, <span class="str">'Alice'</span>, <span class="val">85000</span>, <span class="str">'Finance'</span>,
+    <span class="fn">AES_ENCRYPT</span>(<span class="str">'123-45-6789'</span>, @k)
+);
+
+<span class="cmt">-- 8. Create restricted view for auditor</span>
+<span class="kw">CREATE VIEW</span> audit_view <span class="kw">AS</span>
+    <span class="kw">SELECT</span> id, name, department <span class="kw">FROM</span> employees;
+
+<span class="kw">REVOKE</span> <span class="fn">SELECT</span> <span class="kw">ON</span> company_db.employees <span class="kw">FROM</span> <span class="str">'audit_role'</span>;
+<span class="kw">GRANT</span>  <span class="fn">SELECT</span> <span class="kw">ON</span> company_db.audit_view <span class="kw">TO</span> <span class="str">'audit_role'</span>;
+
+<span class="kw">FLUSH PRIVILEGES</span>;` },
+        ]
+      },
+      cheatsheet: {
+        accent: '#ff7eb3',
+        sections: [
+          { type: 'info', text: '🎯 Complete reference of all MySQL privilege types, their scope, and when to use each one.' },
+          { type: 'heading', text: 'All MySQL Privilege Types' },
+          { type: 'cheatsheet' },
+        ]
+      },
+    };
+
+    const cheatsheetRows = [
+      ['SELECT', 'Table / Column', 'Read rows from a table or specific columns'],
+      ['INSERT', 'Table', 'Add new rows'],
+      ['UPDATE', 'Table / Column', 'Modify existing rows'],
+      ['DELETE', 'Table', 'Remove rows'],
+      ['CREATE', 'DB / Table', 'Create databases or tables'],
+      ['DROP', 'DB / Table', 'Delete databases or tables'],
+      ['ALTER', 'Table', 'Change table structure (ADD COLUMN, etc.)'],
+      ['INDEX', 'Table', 'Create or drop indexes'],
+      ['EXECUTE', 'Procedure', 'Run stored procedures or functions'],
+      ['TRIGGER', 'Table', 'Create triggers on a table'],
+      ['REFERENCES', 'Table', 'Create foreign key constraints'],
+      ['CREATE VIEW', 'DB', 'Create views'],
+      ['SHOW VIEW', 'DB', 'See the definition of views'],
+      ['CREATE ROUTINE', 'DB', 'Create stored procedures/functions'],
+      ['LOCK TABLES', 'DB', 'Use LOCK TABLES on tables'],
+      ['PROCESS', 'Global', 'See all running queries (PROCESSLIST)'],
+      ['SUPER', 'Global', 'Kill connections, change global variables'],
+      ['RELOAD', 'Global', 'Execute FLUSH statements'],
+      ['REPLICATION SLAVE', 'Global', 'Read binary log for replication'],
+      ['ALL PRIVILEGES', 'Any', 'Grant all of the above at the specified scope'],
+    ];
+
+    const grantTable = [
+      ['Global', 'ON *.*', 'Entire MySQL server'],
+      ['Database', 'ON db.*', 'All tables in a database'],
+      ['Table', 'ON db.table', 'One specific table'],
+      ['Column', 'ON db.table (col1,col2)', 'Specific columns only'],
+      ['Routine', 'ON PROCEDURE db.proc', 'A stored procedure/function'],
+    ];
+
+    // ── RENDER CARDS ──
+    const grid = document.getElementById('grid');
+    topics.forEach((t, i) => {
+      const card = document.createElement('div');
+      card.className = `card ${t.color}`;
+      card.style.animationDelay = `${i * 0.07}s`;
+      card.innerHTML = `
+    <div class="card-head">
+      <span class="card-icon">${t.icon}</span>
+      <span class="card-num">${t.num}</span>
+    </div>
+    <div class="card-topic">${t.topic}</div>
+    <div class="card-title">${t.title}</div>
+    <p class="card-desc">${t.desc}</p>
+    <ul class="points">${t.points.map(p => `<li>${p}</li>`).join('')}</ul>
+    <div class="tags">${t.tags.map(tg => `<span class="tag">${tg}</span>`).join('')}</div>
+    <div class="card-footer">
+      <div class="card-count">
+        <strong>${t.count}</strong>${t.unit}
+      </div>
+      <button class="card-btn">Explore <span class="arr">→</span></button>
+    </div>
+  `;
+      card.querySelector('.card-btn').addEventListener('click', () => openModal(t));
+      card.addEventListener('click', (e) => { if (!e.target.classList.contains('card-btn')) openModal(t); });
+      grid.appendChild(card);
+    });
+
+    // ── MODAL ──
+    function openModal(t) {
+      const data = modalContent[t.detail];
+      if (!data) return;
+      document.getElementById('modalTopic').textContent = t.topic;
+      document.getElementById('modalTitle').textContent = t.title;
+      document.getElementById('modalTitle').style.color = data.accent;
+      document.getElementById('modal').style.setProperty('--modal-accent', data.accent);
+
+      const body = document.getElementById('modalBody');
+      body.innerHTML = '';
+
+      data.sections.forEach(s => {
+        if (s.type === 'info') {
+          const el = document.createElement('div');
+          el.className = 'info-box';
+          el.style.borderColor = data.accent + '33';
+          el.style.background = data.accent + '08';
+          el.style.color = '#8fafcc';
+          el.innerHTML = s.text;
+          body.appendChild(el);
+        } else if (s.type === 'warn') {
+          const el = document.createElement('div');
+          el.className = 'info-box warn';
+          el.innerHTML = s.text;
+          body.appendChild(el);
+        } else if (s.type === 'danger') {
+          const el = document.createElement('div');
+          el.className = 'info-box danger';
+          el.innerHTML = s.text;
+          body.appendChild(el);
+        } else if (s.type === 'heading') {
+          const sec = document.createElement('div');
+          sec.className = 'modal-section';
+          const h = document.createElement('h3');
+          h.style.color = data.accent;
+          h.textContent = s.text;
+          sec.appendChild(h);
+          body.appendChild(sec);
+          body._lastSection = sec;
+        } else if (s.type === 'code') {
+          const pre = document.createElement('pre');
+          pre.innerHTML = s.code;
+          const target = body._lastSection || body;
+          target.appendChild(pre);
+        } else if (s.type === 'points-heading') {
+          const sec = document.createElement('div');
+          sec.className = 'modal-section';
+          const h = document.createElement('h3');
+          h.style.color = data.accent;
+          h.textContent = s.text;
+          sec.appendChild(h);
+          body.appendChild(sec);
+          body._lastSection = sec;
+        } else if (s.type === 'points') {
+          const ul = document.createElement('ul');
+          ul.className = 'modal-point-list';
+          ul.style.setProperty('--modal-accent', data.accent);
+          s.items.forEach(item => {
+            const li = document.createElement('li');
+            li.style.setProperty('--modal-accent', data.accent);
+            li.innerHTML = item;
+            ul.appendChild(li);
+          });
+          const target = body._lastSection || body;
+          target.appendChild(ul);
+        } else if (s.type === 'table') {
+          const tbl = document.createElement('table');
+          tbl.className = 'priv-table';
+          tbl.innerHTML = `<thead><tr><th>Scope</th><th>Syntax</th><th>Applies To</th></tr></thead>
+        <tbody>${grantTable.map(r => `<tr><td><span class="badge">${r[0]}</span></td><td style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#7ab8cc">${r[1]}</td><td>${r[2]}</td></tr>`).join('')}</tbody>`;
+          const target = body._lastSection || body;
+          target.appendChild(tbl);
+        } else if (s.type === 'cheatsheet') {
+          const tbl = document.createElement('table');
+          tbl.className = 'priv-table';
+          tbl.innerHTML = `<thead><tr><th>Privilege</th><th>Scope</th><th>Description</th></tr></thead>
+        <tbody>${cheatsheetRows.map(r => `<tr><td><span class="badge">${r[0]}</span></td><td style="color:#7ab8cc;font-size:12px">${r[1]}</td><td>${r[2]}</td></tr>`).join('')}</tbody>`;
+          body.appendChild(tbl);
+        }
+      });
+
+      document.getElementById('modalOverlay').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal(e) {
+      if (e.target === document.getElementById('modalOverlay')) closeModalBtn();
+    }
+    function closeModalBtn() {
+      document.getElementById('modalOverlay').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModalBtn(); });
+  </script>
+</body>
+
+</html>

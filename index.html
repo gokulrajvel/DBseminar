@@ -2044,7 +2044,17 @@
           rows:[['root','localhost','NULL','Query','0','executing'],['john','localhost','company','Sleep','14',''],['app_user','192.168.1.5','company','Query','2','Sending data']],
           msg:'3 rows in set (0.001 sec)' };
       }
-      // information_schema ENCRYPTION
+      // AES SELECT — must come BEFORE the ENCRYPTION check because 'AES_DECRYPT' contains 'ENCRYPT'
+      if (s.includes('AES_DECRYPT')) {
+        return { type:'table', cols:['username','credit_card'],
+          rows:[['Alice','4111-1111-1111-1111'],['Bob','5500-0000-0000-0004']],
+          msg:'2 rows in set (0.003 sec)' };
+      }
+      // AES INSERT — same reason, check before ENCRYPTION substring match
+      if (s.includes('AES_ENCRYPT')) {
+        return { type:'ok', msg:'Query OK, 1 row affected (0.008 sec)\n[Note] credit_card stored as AES-128 encrypted binary' };
+      }
+      // information_schema ENCRYPTION (TDE)
       if (s.includes('CREATE_OPTIONS') || s.includes('ENCRYPTION')) {
         if (s.startsWith('CREATE TABLE')) {
           return { type:'ok', msg:"Query OK, 0 rows affected (0.043 sec)\n[Note] Table 'sensitive_data' created with ENCRYPTION='Y' (InnoDB tablespace encryption enabled)" };
@@ -2052,16 +2062,6 @@
         return { type:'table', cols:['TABLE_SCHEMA','TABLE_NAME','CREATE_OPTIONS'],
           rows:[['company_db','employees',"ENCRYPTION='Y'"],['hr_db','payroll',"ENCRYPTION='Y'"]],
           msg:"2 rows in set (0.003 sec)" };
-      }
-      // AES SELECT
-      if (s.includes('AES_DECRYPT')) {
-        return { type:'table', cols:['username','credit_card'],
-          rows:[['Alice','4111-1111-1111-1111'],['Bob','5500-0000-0000-0004']],
-          msg:'2 rows in set (0.003 sec)' };
-      }
-      // AES INSERT
-      if (s.includes('AES_ENCRYPT')) {
-        return { type:'ok', msg:'Query OK, 1 row affected (0.008 sec)\n[Note] credit_card stored as AES-128 encrypted binary' };
       }
       // SHA2 SELECT / verify
       if (s.startsWith('SELECT') && s.includes('SHA2')) {

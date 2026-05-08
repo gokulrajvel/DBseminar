@@ -938,6 +938,318 @@
       border: 1px solid rgba(0, 212, 255, .2);
     }
 
+
+    /* ── CATEGORY SECTION ── */
+    .category-section {
+      position: relative;
+      z-index: 5;
+      padding: 0 40px;
+      max-width: 1400px;
+      margin: 0 auto 4px;
+    }
+    .category-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 20px;
+      margin-top: 52px;
+    }
+    .category-num {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 3px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .category-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+    .category-line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, var(--border), transparent);
+    }
+    .category-count {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      color: var(--muted);
+      flex-shrink: 0;
+    }
+    .cat-access .category-title { color: var(--accent1); }
+    .cat-access .category-num   { border-color: rgba(0,212,255,.35); color: var(--accent1); }
+    .cat-auth   .category-title { color: var(--accent4); }
+    .cat-auth   .category-num   { border-color: rgba(255,179,71,.35); color: var(--accent4); }
+    .cat-enc    .category-title { color: var(--accent3); }
+    .cat-enc    .category-num   { border-color: rgba(41,217,132,.35); color: var(--accent3); }
+    .category-grid {
+      position: relative;
+      z-index: 5;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 20px;
+      padding: 0 40px 32px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+
+    /* ── QUERY PLAYGROUND ── */
+    .playground-wrap {
+      position: relative;
+      z-index: 5;
+      max-width: 1100px;
+      margin: 60px auto 80px;
+      padding: 0 40px;
+    }
+    .playground-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+    .playground-icon {
+      font-size: 22px;
+    }
+    .playground-title {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: var(--accent3);
+    }
+    .playground-sub {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 1px;
+      margin-left: auto;
+    }
+    .playground-box {
+      background: #07101a;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    }
+    /* top bar */
+    .pq-topbar {
+      background: #0a151f;
+      border-bottom: 1px solid var(--border);
+      padding: 12px 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .pq-dots {
+      display: flex;
+      gap: 6px;
+      margin-right: 4px;
+    }
+    .pq-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+    }
+    .pq-dot.r { background: #ff5f57; }
+    .pq-dot.y { background: #ffbd2e; }
+    .pq-dot.g { background: #28c840; }
+    .pq-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 1px;
+      flex: 1;
+      text-align: center;
+    }
+    .pq-sample-select {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      background: var(--card);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 5px 10px;
+      cursor: pointer;
+      outline: none;
+      max-width: 280px;
+    }
+    .pq-sample-select:focus {
+      border-color: rgba(41,217,132,.5);
+    }
+    /* editor area */
+    .pq-editor-wrap {
+      position: relative;
+      display: flex;
+      min-height: 160px;
+    }
+    .pq-line-nums {
+      background: #060e16;
+      padding: 18px 12px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      color: #2d4a60;
+      line-height: 1.75;
+      text-align: right;
+      user-select: none;
+      border-right: 1px solid var(--border);
+      min-width: 42px;
+    }
+    .pq-editor {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      resize: none;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 13px;
+      color: #9bb5cc;
+      line-height: 1.75;
+      padding: 18px 20px;
+      caret-color: var(--accent3);
+      min-height: 160px;
+    }
+    /* bottom bar */
+    .pq-bottombar {
+      background: #0a151f;
+      border-top: 1px solid var(--border);
+      padding: 10px 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .pq-run-btn {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 1px;
+      padding: 8px 22px;
+      border-radius: 8px;
+      border: 1px solid rgba(41,217,132,.5);
+      background: rgba(41,217,132,.08);
+      color: var(--accent3);
+      cursor: pointer;
+      transition: all .2s;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+    .pq-run-btn:hover {
+      background: rgba(41,217,132,.18);
+      border-color: var(--accent3);
+      box-shadow: 0 0 16px rgba(41,217,132,.15);
+    }
+    .pq-run-btn .play { font-size: 10px; }
+    .pq-clear-btn {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      padding: 7px 14px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all .2s;
+    }
+    .pq-clear-btn:hover {
+      border-color: rgba(255,95,87,.4);
+      color: var(--accent2);
+    }
+    .pq-status {
+      margin-left: auto;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+    }
+    .pq-status.ok  { color: var(--accent3); }
+    .pq-status.err { color: var(--accent2); }
+    /* output panel */
+    .pq-output {
+      border-top: 1px solid var(--border);
+      min-height: 60px;
+      max-height: 340px;
+      overflow-y: auto;
+      padding: 18px 20px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      color: #8fa3bd;
+      line-height: 1.7;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border) transparent;
+    }
+    .pq-output .out-info {
+      color: var(--accent1);
+      margin-bottom: 10px;
+    }
+    .pq-output .out-ok   { color: var(--accent3); }
+    .pq-output .out-warn { color: var(--accent4); }
+    .pq-output .out-err  { color: var(--accent2); }
+    .pq-output .out-dim  { color: #344d63; }
+    /* result table */
+    .out-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      margin: 8px 0 4px;
+    }
+    .out-table th {
+      background: #0a1d2a;
+      color: var(--accent1);
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 7px 12px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+      border-right: 1px solid var(--border);
+    }
+    .out-table td {
+      padding: 6px 12px;
+      border-bottom: 1px solid rgba(26,37,53,.5);
+      border-right: 1px solid rgba(26,37,53,.4);
+      color: #8fa3bd;
+    }
+    .out-table tr:hover td { background: rgba(255,255,255,.02); }
+    .out-table .badge-cell {
+      color: var(--accent3);
+      font-weight: 600;
+    }
+    .pq-prompt {
+      color: var(--accent3);
+      margin-right: 6px;
+    }
+    .pq-placeholder {
+      color: #243849;
+      font-style: italic;
+    }
+
+
+    .modal-playground-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 1px;
+      padding: 9px 20px;
+      border-radius: 8px;
+      border: 1px solid rgba(41,217,132,.4);
+      background: rgba(41,217,132,.06);
+      color: #29d984;
+      cursor: pointer;
+      transition: all .2s;
+      margin-top: 20px;
+      text-decoration: none;
+    }
+    .modal-playground-btn:hover {
+      background: rgba(41,217,132,.15);
+      border-color: #29d984;
+      box-shadow: 0 0 18px rgba(41,217,132,.15);
+    }
+
     /* ── FOOTER ── */
     footer {
       position: relative;
@@ -1003,7 +1315,7 @@
 
   <div class="section-label">Select a Topic</div>
 
-  <div class="grid" id="grid"></div>
+  <div id="grouped-container"></div>
 
   <!-- MODAL -->
   <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
@@ -1019,229 +1331,125 @@
     </div>
   </div>
 
+
+  <!-- QUERY PLAYGROUND -->
+  <div class="playground-wrap">
+    <div class="playground-header">
+      <span class="playground-icon">⚡</span>
+      <span class="playground-title">Query Playground</span>
+      <span class="playground-sub">SIMULATED · NO DB REQUIRED</span>
+    </div>
+    <div class="playground-box">
+      <!-- top bar -->
+      <div class="pq-topbar">
+        <div class="pq-dots">
+          <div class="pq-dot r"></div>
+          <div class="pq-dot y"></div>
+          <div class="pq-dot g"></div>
+        </div>
+        <span class="pq-label">mysql&gt; interactive shell</span>
+        <select class="pq-sample-select" id="sampleSelect" onchange="loadSample()">
+          <option value="">── Load a Sample Query ──</option>
+          <optgroup label="01 · Access Control">
+            <option value="show_users">SHOW all MySQL users</option>
+            <option value="create_user">CREATE USER example</option>
+            <option value="grant_select">GRANT SELECT on a table</option>
+            <option value="grant_all">GRANT ALL PRIVILEGES</option>
+            <option value="show_grants">SHOW GRANTS FOR user</option>
+            <option value="revoke_priv">REVOKE a privilege</option>
+            <option value="create_role">CREATE ROLE + assign</option>
+          </optgroup>
+          <optgroup label="02 · Authentication">
+            <option value="pwd_policy">Check password policy</option>
+            <option value="account_lock">ACCOUNT LOCK / UNLOCK</option>
+            <option value="hash_insert">INSERT with SHA2 hash</option>
+            <option value="hash_verify">Verify hashed password</option>
+          </optgroup>
+          <optgroup label="03 · Encryption">
+            <option value="aes_insert">AES_ENCRYPT insert</option>
+            <option value="aes_select">AES_DECRYPT select</option>
+            <option value="tde_create">CREATE TABLE ENCRYPTION=Y</option>
+            <option value="tde_check">Check encrypted tables</option>
+            <option value="ssl_check">SHOW SSL variables</option>
+            <option value="processlist">SHOW PROCESSLIST</option>
+          </optgroup>
+        </select>
+      </div>
+      <!-- editor -->
+      <div class="pq-editor-wrap">
+        <div class="pq-line-nums" id="lineNums">1</div>
+        <textarea class="pq-editor" id="queryEditor"
+          spellcheck="false"
+          placeholder="-- Type your SQL here or load a sample query above...">SELECT user, host FROM mysql.user;</textarea>
+      </div>
+      <!-- bottom bar -->
+      <div class="pq-bottombar">
+        <button class="pq-run-btn" onclick="runQuery()"><span class="play">▶</span> Run Query</button>
+        <button class="pq-clear-btn" onclick="clearOutput()">Clear Output</button>
+        <span class="pq-status" id="pqStatus">Ready</span>
+      </div>
+      <!-- output -->
+      <div class="pq-output" id="pqOutput">
+        <span class="pq-placeholder">-- Output will appear here after you run a query...</span>
+      </div>
+    </div>
+  </div>
+
   <footer>Built for DB Security Seminar &nbsp;·&nbsp; MySQL Deep Dive &nbsp;·&nbsp; Study smart, ship secure.</footer>
 
   <script>
-    const topics = [
+    // ── GROUPED CATEGORIES ──
+    const categories = [
       {
-        color: 'blue',
-        icon: '👤',
-        num: 'TOPIC 01',
-        topic: 'User Management',
-        title: 'Creating & Managing MySQL Users',
-        desc: 'Control who can connect to MySQL — from local-only accounts to subnet-wide access with host wildcards.',
-        points: [
-          'CREATE USER with host-based restrictions',
-          'ALTER USER to change passwords and settings',
-          'RENAME, LOCK, and DROP user accounts',
-          'View all users from mysql.user system table',
-          'Wildcard hosts: localhost vs % vs subnet',
-        ],
-        tags: ['CREATE USER', 'ALTER USER', 'DROP USER', 'mysql.user'],
-        count: '5', unit: 'Key Commands',
-        detail: `user_management`
+        id:'cat-access', num:'01', label:'Access Control', desc:'4 Topics · 1 Reference',
+        topics:[
+          {color:'blue',  icon:'👤', num:'TOPIC 01',  topic:'User Management',      title:'Creating & Managing MySQL Users',     desc:'Control who can connect to MySQL — from local-only accounts to subnet-wide access with host wildcards.',                         points:['CREATE USER with host-based restrictions','ALTER USER to change passwords and settings','RENAME, LOCK, and DROP user accounts','View all users from mysql.user system table','Wildcard hosts: localhost vs % vs subnet'],             tags:['CREATE USER','ALTER USER','DROP USER','mysql.user'],                   count:'5',       unit:'Key Commands',     detail:'user_management'},
+          {color:'red',   icon:'🔑', num:'TOPIC 02',  topic:'Authorization',        title:'GRANT — Giving Permissions',          desc:'Precisely control what each user can do — from read-only access to full admin rights, at table or column level.',                 points:['Grant global, database, table, or column level privileges','ALL PRIVILEGES vs selective permissions','WITH GRANT OPTION — letting users grant to others','EXECUTE privilege for stored procedures','FLUSH PRIVILEGES to apply changes immediately'], tags:['GRANT','SELECT','INSERT','EXECUTE','ALL PRIVILEGES'],                  count:'12',      unit:'Privilege Types',  detail:'grant'},
+          {color:'green', icon:'🚫', num:'TOPIC 03',  topic:'Authorization',        title:'REVOKE — Removing Permissions',       desc:'Remove specific or all permissions from users — enforce principle of least privilege at any time.',                              points:['Revoke single or multiple privileges at once','REVOKE ALL PRIVILEGES removes everything','Revoke only GRANT OPTION without removing access','Use SHOW GRANTS to audit before revoking','Principle of least privilege explained'],         tags:['REVOKE','SHOW GRANTS','Least Privilege','FLUSH'],                      count:'5',       unit:'Revoke Patterns',  detail:'revoke'},
+          {color:'purple',icon:'🧩', num:'TOPIC 04',  topic:'Roles · MySQL 8.0+',  title:'Role-Based Access Control (RBAC)',    desc:'Bundle privileges into named roles and assign them to many users — clean, scalable access management.',                            points:['Create roles like "hr_role", "dev_role", "audit_role"','Grant privileges TO the role, not each user','Assign multiple roles to a single user','SET DEFAULT ROLE activates role on login','REVOKE a role without touching user directly'],      tags:['CREATE ROLE','GRANT ROLE','SET DEFAULT ROLE','RBAC'],                 count:'4',       unit:'Role Steps',       detail:'roles'},
+          {color:'pink',  icon:'📊', num:'REFERENCE', topic:'Quick Reference',      title:'Privilege Types Cheat Sheet',         desc:'Every MySQL privilege at a glance — scope, description, and when to use it in production.',                                       points:['Global vs Database vs Table vs Column scope','DDL privileges: CREATE, DROP, ALTER, INDEX','DML privileges: SELECT, INSERT, UPDATE, DELETE','Admin privileges: SUPER, PROCESS, RELOAD','SHOW GRANTS to audit any user at any time'],            tags:['DDL','DML','SUPER','PROCESS','SHOW GRANTS'],                           count:'30+',     unit:'Privileges',       detail:'cheatsheet'},
+        ]
       },
       {
-        color: 'red',
-        icon: '🔑',
-        num: 'TOPIC 02',
-        topic: 'Authorization',
-        title: 'GRANT — Giving Permissions',
-        desc: 'Precisely control what each user can do — from read-only access to full admin rights, at table or column level.',
-        points: [
-          'Grant global, database, table, or column level privileges',
-          'ALL PRIVILEGES vs selective permissions',
-          'WITH GRANT OPTION — letting users grant to others',
-          'EXECUTE privilege for stored procedures',
-          'FLUSH PRIVILEGES to apply changes immediately',
-        ],
-        tags: ['GRANT', 'SELECT', 'INSERT', 'EXECUTE', 'ALL PRIVILEGES'],
-        count: '12', unit: 'Privilege Types',
-        detail: `grant`
+        id:'cat-auth', num:'02', label:'Authentication', desc:'2 Topics',
+        topics:[
+          {color:'yellow',icon:'🛡️', num:'TOPIC 05',  topic:'Account Security',    title:'Password Policy & Account Locking',  desc:'Enforce strong passwords, expiry intervals, and auto-lock accounts after repeated failed login attempts.',                          points:['validate_password plugin — LOW, MEDIUM, STRONG','Set minimum length, mixed case, special chars','PASSWORD EXPIRE INTERVAL for forced rotation','ACCOUNT LOCK / UNLOCK to disable accounts','FAILED_LOGIN_ATTEMPTS + PASSWORD_LOCK_TIME'],      tags:['VALIDATE_PASSWORD','ACCOUNT LOCK','PASSWORD EXPIRE','MFA'],           count:'6',       unit:'Security Controls', detail:'password'},
+          {color:'blue',  icon:'#️⃣',num:'TOPIC 07',  topic:'Authentication',      title:'Password Hashing (One-Way)',          desc:'Use SHA2 to store hashed passwords that can never be reversed — essential for authentication tables.',                              points:['SHA2() with 256 or 512 bits','Salting to prevent rainbow table attacks','Verify password by re-hashing and comparing','Why MD5 and SHA1 are insecure today','Use bcrypt/argon2 in application code'],                                         tags:['SHA2','Salt','bcrypt','MD5','Hashing'],                                count:'256',     unit:'SHA2 Bits',        detail:'hashing'},
+        ]
       },
       {
-        color: 'green',
-        icon: '🚫',
-        num: 'TOPIC 03',
-        topic: 'Authorization',
-        title: 'REVOKE — Removing Permissions',
-        desc: 'Remove specific or all permissions from users — enforce principle of least privilege at any time.',
-        points: [
-          'Revoke single or multiple privileges at once',
-          'REVOKE ALL PRIVILEGES removes everything',
-          'Revoke only GRANT OPTION without removing access',
-          'Use SHOW GRANTS to audit before revoking',
-          'Principle of least privilege explained',
-        ],
-        tags: ['REVOKE', 'SHOW GRANTS', 'Least Privilege', 'FLUSH'],
-        count: '5', unit: 'Revoke Patterns',
-        detail: `revoke`
-      },
-      {
-        color: 'purple',
-        icon: '🧩',
-        num: 'TOPIC 04',
-        topic: 'Roles · MySQL 8.0+',
-        title: 'Role-Based Access Control (RBAC)',
-        desc: 'Bundle privileges into named roles and assign them to many users — clean, scalable access management.',
-        points: [
-          'Create roles like "hr_role", "dev_role", "audit_role"',
-          'Grant privileges TO the role, not each user',
-          'Assign multiple roles to a single user',
-          'SET DEFAULT ROLE activates role on login',
-          'REVOKE a role without touching user directly',
-        ],
-        tags: ['CREATE ROLE', 'GRANT ROLE', 'SET DEFAULT ROLE', 'RBAC'],
-        count: '4', unit: 'Role Steps',
-        detail: `roles`
-      },
-      {
-        color: 'yellow',
-        icon: '🛡️',
-        num: 'TOPIC 05',
-        topic: 'Account Security',
-        title: 'Password Policy & Account Locking',
-        desc: 'Enforce strong passwords, expiry intervals, and auto-lock accounts after repeated failed login attempts.',
-        points: [
-          'validate_password plugin — LOW, MEDIUM, STRONG',
-          'Set minimum length, mixed case, special chars',
-          'PASSWORD EXPIRE INTERVAL for forced rotation',
-          'ACCOUNT LOCK / UNLOCK to disable accounts',
-          'FAILED_LOGIN_ATTEMPTS + PASSWORD_LOCK_TIME',
-        ],
-        tags: ['VALIDATE_PASSWORD', 'ACCOUNT LOCK', 'PASSWORD EXPIRE', 'MFA'],
-        count: '6', unit: 'Security Controls',
-        detail: `password`
-      },
-      {
-        color: 'pink',
-        icon: '🔒',
-        num: 'TOPIC 06',
-        topic: 'Encryption',
-        title: 'AES Column-Level Encryption',
-        desc: 'Protect sensitive fields like SSN and credit cards using AES_ENCRYPT / AES_DECRYPT inside MySQL.',
-        points: [
-          'AES_ENCRYPT() / AES_DECRYPT() functions',
-          'Store encrypted data as VARBINARY column',
-          'Secret key management best practices',
-          'Readable by app only with correct key',
-          'Difference between symmetric & asymmetric encryption',
-        ],
-        tags: ['AES_ENCRYPT', 'AES_DECRYPT', 'VARBINARY', 'Secret Key'],
-        count: '256', unit: 'Bit Encryption',
-        detail: `aes`
-      },
-      {
-        color: 'blue',
-        icon: '#️⃣',
-        num: 'TOPIC 07',
-        topic: 'Encryption',
-        title: 'Password Hashing (One-Way)',
-        desc: 'Use SHA2 to store hashed passwords that can never be reversed — essential for authentication tables.',
-        points: [
-          'SHA2() with 256 or 512 bits',
-          'Salting to prevent rainbow table attacks',
-          'Verify password by re-hashing and comparing',
-          'Why MD5 and SHA1 are insecure today',
-          'Use bcrypt/argon2 in application code',
-        ],
-        tags: ['SHA2', 'Salt', 'bcrypt', 'MD5', 'Hashing'],
-        count: '256', unit: 'SHA2 Bits',
-        detail: `hashing`
-      },
-      {
-        color: 'green',
-        icon: '🗄️',
-        num: 'TOPIC 08',
-        topic: 'Encryption',
-        title: 'Transparent Data Encryption (TDE)',
-        desc: 'Encrypt entire InnoDB tablespaces on disk — data is automatically encrypted at rest without app changes.',
-        points: [
-          'ENCRYPTION="Y" on CREATE TABLE',
-          'ALTER TABLE to encrypt existing tables',
-          'keyring_file plugin for key management',
-          'Check encrypted tables via information_schema',
-          'Zero performance impact on modern hardware',
-        ],
-        tags: ['TDE', 'InnoDB', 'ENCRYPTION=Y', 'keyring_file'],
-        count: 'AES·256', unit: 'At-Rest Cipher',
-        detail: `tde`
-      },
-      {
-        color: 'yellow',
-        icon: '🌐',
-        num: 'TOPIC 09',
-        topic: 'Network Security',
-        title: 'SSL/TLS — Encryption in Transit',
-        desc: 'Force encrypted connections between client and MySQL server — prevent man-in-the-middle attacks.',
-        points: [
-          'REQUIRE SSL — user must connect over TLS',
-          'REQUIRE X509 — mutual certificate auth',
-          'SHOW VARIABLES LIKE "%ssl%" to check status',
-          'Cipher suite negotiation explained',
-          'Combining SSL with password for double security',
-        ],
-        tags: ['SSL', 'TLS', 'REQUIRE SSL', 'X509', 'Certificate'],
-        count: 'TLS 1.3', unit: 'Protocol',
-        detail: `ssl`
-      },
-      {
-        color: 'red',
-        icon: '📋',
-        num: 'TOPIC 10',
-        topic: 'Auditing',
-        title: 'Monitoring & Audit Logging',
-        desc: 'Track every query, login, and suspicious activity using general logs and performance_schema.',
-        points: [
-          'general_log — log every SQL statement',
-          'performance_schema for failed login tracking',
-          'PROCESSLIST to see active connections',
-          'KILL CONNECTION to end suspicious sessions',
-          'Audit plugin for enterprise-grade logging',
-        ],
-        tags: ['general_log', 'PROCESSLIST', 'KILL', 'performance_schema'],
-        count: '100%', unit: 'Query Visibility',
-        detail: `audit`
-      },
-      {
-        color: 'purple',
-        icon: '🏢',
-        num: 'TOPIC 11',
-        topic: 'Real-World Scenario',
-        title: 'Company DB Security Setup',
-        desc: 'End-to-end scenario: build a secured company database with roles, encrypted SSN, restricted views.',
-        points: [
-          'Design roles for HR, Developer, Auditor',
-          'Encrypt SSN with AES before insert',
-          'Create VIEWS to hide sensitive columns',
-          'Grant only view access to auditor role',
-          'Combine SSL + roles + encryption in one schema',
-        ],
-        tags: ['Full Demo', 'Roles', 'AES', 'VIEW', 'SSL'],
-        count: '11', unit: 'Steps',
-        detail: `scenario`
-      },
-      {
-        color: 'pink',
-        icon: '📊',
-        num: 'REFERENCE',
-        topic: 'Quick Reference',
-        title: 'Privilege Types Cheat Sheet',
-        desc: 'Every MySQL privilege at a glance — scope, description, and when to use it in production.',
-        points: [
-          'Global vs Database vs Table vs Column scope',
-          'DDL privileges: CREATE, DROP, ALTER, INDEX',
-          'DML privileges: SELECT, INSERT, UPDATE, DELETE',
-          'Admin privileges: SUPER, PROCESS, RELOAD',
-          'SHOW GRANTS to audit any user at any time',
-        ],
-        tags: ['DDL', 'DML', 'SUPER', 'PROCESS', 'SHOW GRANTS'],
-        count: '30+', unit: 'Privileges',
-        detail: `cheatsheet`
+        id:'cat-enc', num:'03', label:'Encryption', desc:'5 Topics',
+        topics:[
+          {color:'pink',  icon:'🔒', num:'TOPIC 06',  topic:'Encryption',          title:'AES Column-Level Encryption',         desc:'Protect sensitive fields like SSN and credit cards using AES_ENCRYPT / AES_DECRYPT inside MySQL.',                                 points:['AES_ENCRYPT() / AES_DECRYPT() functions','Store encrypted data as VARBINARY column','Secret key management best practices','Readable by app only with correct key','Difference between symmetric & asymmetric encryption'],                      tags:['AES_ENCRYPT','AES_DECRYPT','VARBINARY','Secret Key'],                  count:'256',     unit:'Bit Encryption',   detail:'aes'},
+          {color:'green', icon:'🗄️', num:'TOPIC 08',  topic:'Encryption',          title:'Transparent Data Encryption (TDE)',   desc:'Encrypt entire InnoDB tablespaces on disk — data is automatically encrypted at rest without app changes.',                         points:['ENCRYPTION="Y" on CREATE TABLE','ALTER TABLE to encrypt existing tables','keyring_file plugin for key management','Check encrypted tables via information_schema','Zero performance impact on modern hardware'],                                 tags:['TDE','InnoDB','ENCRYPTION=Y','keyring_file'],                          count:'AES·256', unit:'At-Rest Cipher',   detail:'tde'},
+          {color:'yellow',icon:'🌐', num:'TOPIC 09',  topic:'Network Security',    title:'SSL/TLS — Encryption in Transit',     desc:'Force encrypted connections between client and MySQL server — prevent man-in-the-middle attacks.',                                   points:['REQUIRE SSL — user must connect over TLS','REQUIRE X509 — mutual certificate auth','SHOW VARIABLES LIKE "%ssl%" to check status','Cipher suite negotiation explained','Combining SSL with password for double security'],                       tags:['SSL','TLS','REQUIRE SSL','X509','Certificate'],                        count:'TLS 1.3', unit:'Protocol',         detail:'ssl'},
+          {color:'red',   icon:'📋', num:'TOPIC 10',  topic:'Auditing',            title:'Monitoring & Audit Logging',          desc:'Track every query, login, and suspicious activity using general logs and performance_schema.',                                      points:['general_log — log every SQL statement','performance_schema for failed login tracking','PROCESSLIST to see active connections','KILL CONNECTION to end suspicious sessions','Audit plugin for enterprise-grade logging'],                          tags:['general_log','PROCESSLIST','KILL','performance_schema'],               count:'100%',    unit:'Query Visibility',  detail:'audit'},
+          {color:'purple',icon:'🏢', num:'TOPIC 11',  topic:'Real-World Scenario', title:'Company DB Security Setup',           desc:'End-to-end scenario: build a secured company database with roles, encrypted SSN, restricted views.',                                 points:['Design roles for HR, Developer, Auditor','Encrypt SSN with AES before insert','Create VIEWS to hide sensitive columns','Grant only view access to auditor role','Combine SSL + roles + encryption in one schema'],                               tags:['Full Demo','Roles','AES','VIEW','SSL'],                                count:'11',      unit:'Steps',            detail:'scenario'},
+        ]
       },
     ];
 
-    // ── MODAL CONTENT ──
+    // ── RENDER GROUPED CARDS ──
+    const container = document.getElementById('grouped-container');
+    categories.forEach(cat => {
+      const sec = document.createElement('div');
+      sec.className = 'category-section';
+      sec.innerHTML = `<div class="category-header ${cat.id}"><span class="category-num">${cat.num}</span><span class="category-title">${cat.label}</span><span class="category-line"></span><span class="category-count">${cat.desc}</span></div>`;
+      container.appendChild(sec);
+      const grid = document.createElement('div');
+      grid.className = 'category-grid';
+      cat.topics.forEach((t, i) => {
+        const card = document.createElement('div');
+        card.className = `card ${t.color}`;
+        card.style.animationDelay = `${i * 0.07}s`;
+        card.innerHTML = `<div class="card-head"><span class="card-icon">${t.icon}</span><span class="card-num">${t.num}</span></div><div class="card-topic">${t.topic}</div><div class="card-title">${t.title}</div><p class="card-desc">${t.desc}</p><ul class="points">${t.points.map(p=>`<li>${p}</li>`).join('')}</ul><div class="tags">${t.tags.map(tg=>`<span class="tag">${tg}</span>`).join('')}</div><div class="card-footer"><div class="card-count"><strong>${t.count}</strong>${t.unit}</div><button class="card-btn">Explore <span class="arr">→</span></button></div>`;
+        card.querySelector('.card-btn').addEventListener('click', () => openModal(t));
+        card.addEventListener('click', e => { if (!e.target.classList.contains('card-btn')) openModal(t); });
+        grid.appendChild(card);
+      });
+      container.appendChild(grid);
+    });
+
     const modalContent = {
       user_management: {
         accent: '#00d4ff',
@@ -1626,7 +1834,7 @@
       },
     };
 
-    const cheatsheetRows = [
+        const cheatsheetRows = [
       ['SELECT', 'Table / Column', 'Read rows from a table or specific columns'],
       ['INSERT', 'Table', 'Add new rows'],
       ['UPDATE', 'Table / Column', 'Modify existing rows'],
@@ -1657,35 +1865,8 @@
       ['Routine', 'ON PROCEDURE db.proc', 'A stored procedure/function'],
     ];
 
-    // ── RENDER CARDS ──
-    const grid = document.getElementById('grid');
-    topics.forEach((t, i) => {
-      const card = document.createElement('div');
-      card.className = `card ${t.color}`;
-      card.style.animationDelay = `${i * 0.07}s`;
-      card.innerHTML = `
-    <div class="card-head">
-      <span class="card-icon">${t.icon}</span>
-      <span class="card-num">${t.num}</span>
-    </div>
-    <div class="card-topic">${t.topic}</div>
-    <div class="card-title">${t.title}</div>
-    <p class="card-desc">${t.desc}</p>
-    <ul class="points">${t.points.map(p => `<li>${p}</li>`).join('')}</ul>
-    <div class="tags">${t.tags.map(tg => `<span class="tag">${tg}</span>`).join('')}</div>
-    <div class="card-footer">
-      <div class="card-count">
-        <strong>${t.count}</strong>${t.unit}
-      </div>
-      <button class="card-btn">Explore <span class="arr">→</span></button>
-    </div>
-  `;
-      card.querySelector('.card-btn').addEventListener('click', () => openModal(t));
-      card.addEventListener('click', (e) => { if (!e.target.classList.contains('card-btn')) openModal(t); });
-      grid.appendChild(card);
-    });
-
     // ── MODAL ──
+
     function openModal(t) {
       const data = modalContent[t.detail];
       if (!data) return;
@@ -1767,6 +1948,31 @@
         }
       });
 
+      // Add "Try in Playground" button
+      const detailToSample = {'user_management': 'create_user', 'grant': 'grant_select', 'revoke': 'revoke_priv', 'roles': 'create_role', 'cheatsheet': 'show_grants', 'password': 'pwd_policy', 'hashing': 'hash_insert', 'aes': 'aes_insert', 'tde': 'tde_create', 'ssl': 'ssl_check', 'audit': 'processlist', 'scenario': 'create_role'};
+      const sampleKey = detailToSample[t.detail];
+      if (sampleKey) {
+        const tryBtn = document.createElement('a');
+        tryBtn.className = 'modal-playground-btn';
+        tryBtn.innerHTML = '⚡ Try in Query Playground';
+        tryBtn.href = '#';
+        tryBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          closeModalBtn();
+          const editor = document.getElementById('queryEditor');
+          if (editor && sampleQueries && sampleQueries[sampleKey]) {
+            editor.value = sampleQueries[sampleKey];
+            updateLineNums();
+            document.getElementById('pqStatus').textContent = 'Sample loaded — click Run Query';
+            document.getElementById('pqStatus').className = 'pq-status';
+          }
+          setTimeout(() => {
+            document.querySelector('.playground-wrap').scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }, 300);
+        });
+        body.appendChild(tryBtn);
+      }
+
       document.getElementById('modalOverlay').classList.add('open');
       document.body.style.overflow = 'hidden';
     }
@@ -1779,6 +1985,243 @@
       document.body.style.overflow = '';
     }
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModalBtn(); });
+
+    // ══════════════════════════════════════════
+    //  QUERY PLAYGROUND — Simulated SQL Engine
+    // ══════════════════════════════════════════
+
+    const sampleQueries = {
+      show_users:   `SELECT user, host, account_locked\nFROM mysql.user\nORDER BY user;`,
+      create_user:  `-- Create a local-only user\nCREATE USER 'john'@'localhost'\n  IDENTIFIED BY 'SecurePass@123';\n\n-- Verify creation\nSELECT user, host FROM mysql.user WHERE user = 'john';`,
+      grant_select: `-- Grant read-only on one table\nGRANT SELECT ON company.employees\n  TO 'john'@'localhost';\n\nFLUSH PRIVILEGES;`,
+      grant_all:    `-- Grant superuser access\nGRANT ALL PRIVILEGES ON *.*\n  TO 'admin'@'localhost'\n  WITH GRANT OPTION;\n\nFLUSH PRIVILEGES;`,
+      show_grants:  `SHOW GRANTS FOR 'john'@'localhost';`,
+      revoke_priv:  `-- Remove DELETE privilege\nREVOKE DELETE ON company.*\n  FROM 'john'@'localhost';\n\nSHOW GRANTS FOR 'john'@'localhost';`,
+      create_role:  `-- Step 1: Create roles\nCREATE ROLE 'read_only', 'developer';\n\n-- Step 2: Grant privileges to role\nGRANT SELECT ON company.* TO 'read_only';\nGRANT SELECT, INSERT, UPDATE ON company.* TO 'developer';\n\n-- Step 3: Assign role to user\nGRANT 'developer' TO 'john'@'localhost';\nSET DEFAULT ROLE 'developer' TO 'john'@'localhost';`,
+      pwd_policy:   `SHOW VARIABLES LIKE 'validate_password%';`,
+      account_lock: `-- Lock account\nALTER USER 'john'@'localhost' ACCOUNT LOCK;\n\n-- Unlock account\nALTER USER 'john'@'localhost' ACCOUNT UNLOCK;`,
+      hash_insert:  `-- Store salted SHA2 password\nSET @salt = 'rnd_salt_abc';\nINSERT INTO app_users (username, password_hash, salt)\nVALUES ('bob', SHA2(CONCAT('MyPassword123', @salt), 256), @salt);`,
+      hash_verify:  `-- Verify login\nSELECT * FROM app_users\nWHERE username = 'bob'\n  AND password_hash = SHA2(CONCAT('MyPassword123', salt), 256);`,
+      aes_insert:   `SET @key = 'MySecretKey@2024';\nINSERT INTO secure_users (username, credit_card, email)\nVALUES ('Alice', AES_ENCRYPT('4111-1111-1111-1111', @key), 'alice@ex.com');`,
+      aes_select:   `SET @key = 'MySecretKey@2024';\nSELECT username,\n  CAST(AES_DECRYPT(credit_card, @key) AS CHAR) AS credit_card\nFROM secure_users;`,
+      tde_create:   `CREATE TABLE sensitive_data (\n  id     INT PRIMARY KEY,\n  ssn    VARCHAR(20),\n  salary DECIMAL(10,2)\n) ENCRYPTION='Y';`,
+      tde_check:    `SELECT TABLE_SCHEMA, TABLE_NAME, CREATE_OPTIONS\nFROM information_schema.TABLES\nWHERE CREATE_OPTIONS LIKE '%ENCRYPTION%';`,
+      ssl_check:    `SHOW VARIABLES LIKE '%ssl%';`,
+      processlist:  `SELECT user, host, db, command, time, state\nFROM information_schema.PROCESSLIST\nORDER BY time DESC;`,
+    };
+
+    // ── Simulated result engine ──
+    function simulateQuery(sql) {
+      const s = sql.trim().replace(/\s+/g, ' ').toUpperCase();
+
+      // SELECT from mysql.user
+      if (s.includes('FROM MYSQL.USER') || s.includes('FROM MYSQL.USER')) {
+        return { type:'table', cols:['user','host','account_locked'],
+          rows:[['root','localhost','N'],['john','localhost','N'],['app_user','192.168.1.%','N'],['admin','%','N']],
+          msg:'4 rows in set (0.002 sec)' };
+      }
+      // SHOW GRANTS
+      if (s.startsWith('SHOW GRANTS')) {
+        return { type:'table', cols:['Grants for john@localhost'],
+          rows:[["GRANT USAGE ON *.* TO `john`@`localhost`"],["GRANT SELECT ON `company`.`employees` TO `john`@`localhost`"]],
+          msg:'2 rows in set (0.001 sec)' };
+      }
+      // SHOW VARIABLES password
+      if (s.includes('VALIDATE_PASSWORD')) {
+        return { type:'table', cols:['Variable_name','Value'],
+          rows:[['validate_password.check_user_name','ON'],['validate_password.length','8'],['validate_password.mixed_case_count','1'],['validate_password.number_count','1'],['validate_password.policy','MEDIUM'],['validate_password.special_char_count','1']],
+          msg:'6 rows in set (0.001 sec)' };
+      }
+      // SHOW VARIABLES ssl
+      if (s.includes("LIKE '%SSL%'") || s.includes("LIKE '%SSL%'")) {
+        return { type:'table', cols:['Variable_name','Value'],
+          rows:[['have_openssl','YES'],['have_ssl','YES'],['ssl_ca','/var/lib/mysql/ca.pem'],['ssl_cert','/var/lib/mysql/server-cert.pem'],['ssl_cipher',''],['ssl_key','/var/lib/mysql/server-key.pem'],['tls_version','TLSv1.2,TLSv1.3']],
+          msg:'7 rows in set (0.001 sec)' };
+      }
+      // PROCESSLIST
+      if (s.includes('PROCESSLIST')) {
+        return { type:'table', cols:['user','host','db','command','time','state'],
+          rows:[['root','localhost','NULL','Query','0','executing'],['john','localhost','company','Sleep','14',''],['app_user','192.168.1.5','company','Query','2','Sending data']],
+          msg:'3 rows in set (0.001 sec)' };
+      }
+      // information_schema ENCRYPTION
+      if (s.includes('CREATE_OPTIONS') || s.includes('ENCRYPTION')) {
+        if (s.startsWith('CREATE TABLE')) {
+          return { type:'ok', msg:"Query OK, 0 rows affected (0.043 sec)\n[Note] Table 'sensitive_data' created with ENCRYPTION='Y' (InnoDB tablespace encryption enabled)" };
+        }
+        return { type:'table', cols:['TABLE_SCHEMA','TABLE_NAME','CREATE_OPTIONS'],
+          rows:[['company_db','employees',"ENCRYPTION='Y'"],['hr_db','payroll',"ENCRYPTION='Y'"]],
+          msg:"2 rows in set (0.003 sec)" };
+      }
+      // AES SELECT
+      if (s.includes('AES_DECRYPT')) {
+        return { type:'table', cols:['username','credit_card'],
+          rows:[['Alice','4111-1111-1111-1111'],['Bob','5500-0000-0000-0004']],
+          msg:'2 rows in set (0.003 sec)' };
+      }
+      // AES INSERT
+      if (s.includes('AES_ENCRYPT')) {
+        return { type:'ok', msg:'Query OK, 1 row affected (0.008 sec)\n[Note] credit_card stored as AES-128 encrypted binary' };
+      }
+      // SHA2 SELECT / verify
+      if (s.startsWith('SELECT') && s.includes('SHA2')) {
+        return { type:'table', cols:['id','username','password_hash','salt'],
+          rows:[['1','bob','a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3','rnd_salt_abc']],
+          msg:'1 row in set (0.002 sec)' };
+      }
+      // SHA2 INSERT
+      if (s.includes('SHA2') && (s.startsWith('INSERT') || s.startsWith('SET'))) {
+        return { type:'ok', msg:'Query OK, 1 row affected (0.005 sec)\n[Note] Password stored as SHA2-256 salted hash — plaintext never saved' };
+      }
+      // CREATE USER
+      if (s.startsWith('CREATE USER')) {
+        const match = sql.match(/CREATE USER\s+'([^']+)'@'([^']+)'/i);
+        const u = match ? match[1] : 'user'; const h = match ? match[2] : 'localhost';
+        return { type:'ok', msg:`Query OK, 0 rows affected (0.012 sec)\n[Note] User '${u}'@'${h}' created successfully` };
+      }
+      // DROP USER
+      if (s.startsWith('DROP USER')) {
+        return { type:'ok', msg:'Query OK, 0 rows affected (0.008 sec)' };
+      }
+      // GRANT
+      if (s.startsWith('GRANT') && !s.includes('CREATE ROLE')) {
+        return { type:'ok', msg:'Query OK, 0 rows affected (0.006 sec)\n[Note] Privilege granted — run FLUSH PRIVILEGES to apply' };
+      }
+      // REVOKE
+      if (s.startsWith('REVOKE')) {
+        return { type:'ok', msg:'Query OK, 0 rows affected (0.005 sec)\n[Note] Privilege revoked successfully' };
+      }
+      // CREATE ROLE
+      if (s.startsWith('CREATE ROLE')) {
+        return { type:'ok', msg:"Query OK, 0 rows affected (0.009 sec)\n[Note] Roles created — use GRANT <privilege> ON <scope> TO '<role>' to assign permissions" };
+      }
+      // SET DEFAULT ROLE
+      if (s.startsWith('SET DEFAULT ROLE')) {
+        return { type:'ok', msg:'Query OK, 0 rows affected (0.004 sec)' };
+      }
+      // ALTER USER lock/unlock
+      if (s.startsWith('ALTER USER') && s.includes('ACCOUNT LOCK')) {
+        return { type:'ok', msg:"Query OK, 0 rows affected (0.005 sec)\n[Note] Account locked — user cannot login until ACCOUNT UNLOCK" };
+      }
+      if (s.startsWith('ALTER USER') && s.includes('ACCOUNT UNLOCK')) {
+        return { type:'ok', msg:'Query OK, 0 rows affected (0.004 sec)\n[Note] Account unlocked successfully' };
+      }
+      // ALTER USER (general)
+      if (s.startsWith('ALTER USER')) {
+        return { type:'ok', msg:'Query OK, 0 rows affected (0.007 sec)' };
+      }
+      // FLUSH
+      if (s.startsWith('FLUSH')) {
+        return { type:'ok', msg:'Query OK, 0 rows affected (0.001 sec)' };
+      }
+      // CREATE TABLE
+      if (s.startsWith('CREATE TABLE')) {
+        const m = sql.match(/CREATE TABLE\s+(\w+)/i);
+        return { type:'ok', msg:`Query OK, 0 rows affected (0.038 sec)\n[Note] Table '${m ? m[1] : 'new_table'}' created` };
+      }
+      // CREATE DATABASE
+      if (s.startsWith('CREATE DATABASE')) {
+        return { type:'ok', msg:'Query OK, 1 row affected (0.002 sec)' };
+      }
+      // INSERT
+      if (s.startsWith('INSERT')) {
+        return { type:'ok', msg:'Query OK, 1 row affected (0.006 sec)' };
+      }
+      // SET variable
+      if (s.startsWith('SET @') || s.startsWith('SET GLOBAL')) {
+        return { type:'ok', msg:'Query OK, 0 rows affected (0.001 sec)' };
+      }
+      // KILL
+      if (s.startsWith('KILL')) {
+        return { type:'ok', msg:'Query OK, 0 rows affected (0.000 sec)' };
+      }
+      // Generic SELECT
+      if (s.startsWith('SELECT')) {
+        return { type:'info', msg:'-- Simulated: this SELECT requires a live MySQL connection.\n-- Load a sample query from the dropdown to see a full result.' };
+      }
+      // Unknown
+      return { type:'info', msg:'-- Simulation note: This query type shows real output only on a live\n   MySQL server. Try a sample from the dropdown above ↑' };
+    }
+
+    function runQuery() {
+      const editor = document.getElementById('queryEditor');
+      const output = document.getElementById('pqOutput');
+      const status = document.getElementById('pqStatus');
+      const rawSQL = editor.value.trim();
+      if (!rawSQL) return;
+
+      // Split by ; and run each non-empty, non-comment statement
+      const stmts = rawSQL.split(';').map(s => s.trim()).filter(s => s && !s.startsWith('--'));
+      let html = '';
+      const t0 = performance.now();
+
+      stmts.forEach(stmt => {
+        const display = stmt.replace(/</g,'&lt;').replace(/>/g,'&gt;');
+        html += `<div style="margin-bottom:14px">`;
+        html += `<div style="margin-bottom:6px"><span class="pq-prompt">mysql&gt;</span><span style="color:#5a8fa8">${display};</span></div>`;
+        const res = simulateQuery(stmt);
+        if (res.type === 'table') {
+          html += `<table class="out-table"><thead><tr>${res.cols.map(c=>`<th>${c}</th>`).join('')}</tr></thead><tbody>`;
+          res.rows.forEach(row => {
+            html += `<tr>${row.map((cell,i)=> i===0 ? `<td class="badge-cell">${cell}</td>` : `<td>${cell}</td>`).join('')}</tr>`;
+          });
+          html += `</tbody></table>`;
+          html += `<div class="out-ok" style="margin-top:6px">✓ ${res.msg}</div>`;
+        } else if (res.type === 'ok') {
+          res.msg.split('\n').forEach(line => {
+            if (line.startsWith('[Note]')) html += `<div class="out-warn">${line}</div>`;
+            else html += `<div class="out-ok">✓ ${line}</div>`;
+          });
+        } else if (res.type === 'err') {
+          html += `<div class="out-err">✗ ERROR: ${res.msg}</div>`;
+        } else {
+          res.msg.split('\n').forEach(line => { html += `<div class="out-dim">${line}</div>`; });
+        }
+        html += `</div>`;
+      });
+
+      const elapsed = (performance.now() - t0).toFixed(1);
+      output.innerHTML = html;
+      status.textContent = `Done in ${elapsed}ms`;
+      status.className = 'pq-status ok';
+    }
+
+    function clearOutput() {
+      document.getElementById('pqOutput').innerHTML = '<span class="pq-placeholder">-- Output cleared. Run a query to see results...</span>';
+      document.getElementById('pqStatus').textContent = 'Ready';
+      document.getElementById('pqStatus').className = 'pq-status';
+    }
+
+    function loadSample() {
+      const sel = document.getElementById('sampleSelect');
+      const key = sel.value;
+      if (!key) return;
+      const editor = document.getElementById('queryEditor');
+      editor.value = sampleQueries[key] || '';
+      updateLineNums();
+      sel.value = '';
+      document.getElementById('pqStatus').textContent = 'Sample loaded — click Run Query';
+      document.getElementById('pqStatus').className = 'pq-status';
+    }
+
+    function updateLineNums() {
+      const editor = document.getElementById('queryEditor');
+      const lines = editor.value.split('\n').length;
+      document.getElementById('lineNums').innerHTML = Array.from({length: lines}, (_,i) => i+1).join('<br>');
+    }
+
+    document.getElementById('queryEditor').addEventListener('input', updateLineNums);
+    document.getElementById('queryEditor').addEventListener('keydown', function(e) {
+      if (e.key === 'Tab') {
+        e.preventDefault();
+        const s = this.selectionStart, end = this.selectionEnd;
+        this.value = this.value.substring(0,s) + '  ' + this.value.substring(end);
+        this.selectionStart = this.selectionEnd = s + 2;
+      }
+      if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); runQuery(); }
+    });
+    updateLineNums();
+
   </script>
 </body>
 
